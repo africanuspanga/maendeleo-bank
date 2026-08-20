@@ -45,7 +45,7 @@ export function Hero() {
 				<Reveal>
 					<h1 className="mx-auto max-w-4xl text-[52px] font-light leading-[0.98] tracking-[-2px] text-white md:text-[88px] lg:text-[104px]">
 						<span className="block">Together in</span>
-						<span className="block text-brand-soft-on-dark">Progress</span>
+						<span className="block">Progress</span>
 					</h1>
 				</Reveal>
 				<Reveal delay={120}>

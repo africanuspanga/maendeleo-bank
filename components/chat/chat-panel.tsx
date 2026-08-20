@@ -208,7 +208,7 @@ export function ChatPanel({ onClose, returnFocusRef }: ChatPanelProps) {
               />
             </span>
             <div className="space-y-1.5">
-              <p className="font-heading text-heading-md text-brand-green-deep">
+              <p className="font-heading text-heading-md text-ink">
                 Karibu Maendeleo Bank
               </p>
               <p className="mx-auto max-w-64 text-sm text-ink-secondary">
@@ -222,11 +222,11 @@ export function ChatPanel({ onClose, returnFocusRef }: ChatPanelProps) {
                   key={prompt}
                   type="button"
                   onClick={() => send(prompt)}
-                  className="group flex min-h-11 items-center justify-between gap-3 rounded-full border border-hairline bg-brand-green-subdued px-4 py-2.5 text-left text-sm text-ink transition-colors hover:border-brand-green-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green-deep"
+                  className="group flex min-h-11 items-center justify-between gap-3 rounded-full border border-hairline bg-white px-4 py-2.5 text-left text-sm text-ink transition-colors hover:border-brand hover:bg-brand-subdued focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                 >
                   <span className="truncate">{prompt}</span>
                   <ArrowRight
-                    className="h-4 w-4 shrink-0 text-ink-mute transition-transform group-hover:translate-x-0.5 group-hover:text-brand-green-deep"
+                    className="h-4 w-4 shrink-0 text-ink-mute transition-transform group-hover:translate-x-0.5 group-hover:text-brand"
                     aria-hidden="true"
                   />
                 </button>
@@ -270,7 +270,7 @@ export function ChatPanel({ onClose, returnFocusRef }: ChatPanelProps) {
           send(input);
         }}
       >
-        <div className="flex items-center gap-2 rounded-full border border-hairline bg-canvas-soft py-1.5 pr-1.5 pl-4 transition-colors focus-within:border-brand-green-deep">
+        <div className="flex items-center gap-2 rounded-full border border-hairline bg-canvas-soft py-1.5 pr-1.5 pl-4 transition-colors focus-within:border-brand">
           <input
             ref={inputRef}
             type="text"
@@ -286,7 +286,7 @@ export function ChatPanel({ onClose, returnFocusRef }: ChatPanelProps) {
             type="submit"
             disabled={!canSend}
             aria-label="Send message"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-green-deep text-white transition-colors hover:bg-brand-green focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green-deep disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand text-white transition-colors hover:bg-brand-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ArrowUp className="h-4 w-4" aria-hidden="true" />
           </button>
