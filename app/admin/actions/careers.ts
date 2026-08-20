@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 import { createClient } from "@/lib/supabase/server";
 import type { ContentStatus } from "@/lib/supabase/types";
@@ -45,6 +45,7 @@ export async function saveCareer(input: CareerInput): Promise<ActionResult> {
 	if (error) return failure(error);
 
 	revalidatePath("/admin/careers");
+	revalidateTag("careers", "max"); // F02: invalidate the public site's cached reads
 	return { ok: true };
 }
 
@@ -62,6 +63,7 @@ export async function setCareerStatus(
 	if (error) return failure(error);
 
 	revalidatePath("/admin/careers");
+	revalidateTag("careers", "max"); // F02: invalidate the public site's cached reads
 	return { ok: true };
 }
 
@@ -73,5 +75,6 @@ export async function deleteCareer(id: string): Promise<ActionResult> {
 	if (error) return failure(error);
 
 	revalidatePath("/admin/careers");
+	revalidateTag("careers", "max"); // F02: invalidate the public site's cached reads
 	return { ok: true };
 }

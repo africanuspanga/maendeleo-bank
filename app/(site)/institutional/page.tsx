@@ -19,7 +19,14 @@ import {
 export const metadata: Metadata = {
 	title: "Institutional Banking",
 	description:
-		"Community accounts, SACCOS financing, Jamii loans for religious institutions, treasury and payment facilities — institutional banking from Maendeleo Bank.",
+		"Community accounts, SACCOS financing, Jamii loans for religious institutions, treasury and payment facilities, institutional banking from Maendeleo Bank.",
+	alternates: { canonical: "/institutional" },
+	openGraph: {
+		title: "Institutional Banking",
+		description:
+			"Community accounts, SACCOS financing, Jamii loans for religious institutions, treasury and payment facilities, institutional banking from Maendeleo Bank.",
+		url: "/institutional",
+	},
 };
 
 const offerings = [
@@ -33,14 +40,14 @@ const offerings = [
 	{
 		icon: Users,
 		title: "SACCOS financing",
-		body: "A credit scheme for Savings and Co-operative Credit Societies, helping SACCOS provide short-term loans to their members — no collateral, repayment up to 48 months.",
+		body: "A credit scheme for Savings and Co-operative Credit Societies, helping SACCOS provide short-term loans to their members, no collateral, repayment up to 48 months.",
 		href: "/loans#saccos",
 		linkLabel: "See the SACCOS Loan",
 	},
 	{
 		icon: Handshake,
 		title: "Jamii Loan",
-		body: "Designed to boost projects owned by religious institutions — from TZS 1,000,000 with a grace period of up to 6 months and tenures up to 48 months.",
+		body: "Designed to boost projects owned by religious institutions, from TZS 1,000,000 with a grace period of up to 6 months and tenures up to 48 months.",
 		href: "/loans#jamii",
 		linkLabel: "See the Jamii Loan",
 	},
@@ -61,6 +68,8 @@ export default function InstitutionalPage() {
 				title="A bank built by an institution, for institutions"
 				lede="Maendeleo Bank was founded by the Evangelical Lutheran Church in Tanzania, Eastern and Coastal Diocese. Serving churches, dioceses, SACCOS, NGOs and corporates is in our DNA."
 				breadcrumb={[{ label: "Home", href: "/" }, { label: "Institutional" }]}
+				stat={{ value: "ELCT", label: "founded by the Eastern and Coastal Diocese" }}
+				accent="charcoal"
 			/>
 
 			<section className="bg-white">
@@ -95,9 +104,9 @@ export default function InstitutionalPage() {
 								NGOs, companies and the general public.
 							</p>
 							<p className="mt-4 max-w-lg text-base font-light leading-[1.4] text-ink-secondary">
-								Church-related shareholders — including the United Evangelical
+								Church-related shareholders, including the United Evangelical
 								Mission, ELCT-ECD diocese institutions and the ELCT Retirement
-								Scheme — remain anchor shareholders alongside thousands of
+								Scheme, remain anchor shareholders alongside thousands of
 								individual investors.
 							</p>
 						</div>
@@ -108,7 +117,7 @@ export default function InstitutionalPage() {
 							</h3>
 							<p className="mt-3 text-[15px] font-light leading-[1.4] text-white/70">
 								Collection accounts, bulk payments and treasury services for
-								dioceses, parishes, schools, hospitals, SACCOS and corporates —
+								dioceses, parishes, schools, hospitals, SACCOS and corporates,
 								with relationship officers who understand institutional
 								governance and reporting.
 							</p>
@@ -129,7 +138,7 @@ export default function InstitutionalPage() {
 					<SectionHeading
 						eyebrow="Get started"
 						title="Partner with Maendeleo Bank"
-						lede="Reach us at Head Office, Luther House, Sokoine Drive — or call toll-free 0800750089 to speak with our institutional banking team."
+						lede="Reach us at Head Office, Luther House, Sokoine Drive, or call toll-free 0800750089 to speak with our institutional banking team."
 					/>
 					<PillLink href="/contact">Contact us</PillLink>
 				</Container>

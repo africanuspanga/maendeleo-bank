@@ -21,24 +21,31 @@ import {
 export const metadata: Metadata = {
 	title: "Digital Banking",
 	description:
-		"MB Mobile USSD *150*52#, Internet Banking, the MB Mobile App, 280+ Umoja ATMs and 2,100+ agents — digital banking from Maendeleo Bank.",
+		"MB Mobile USSD *150*52#, Internet Banking, the MB Mobile App, 280+ Umoja ATMs and 2,100+ agents, digital banking from Maendeleo Bank.",
+	alternates: { canonical: "/digital-banking" },
+	openGraph: {
+		title: "Digital Banking",
+		description:
+			"MB Mobile USSD *150*52#, Internet Banking, the MB Mobile App, 280+ Umoja ATMs and 2,100+ agents, digital banking from Maendeleo Bank.",
+		url: "/digital-banking",
+	},
 };
 
 const ussdServices = [
 	{
 		icon: ArrowLeftRight,
 		title: "Transfers within the bank",
-		body: "Easily transfer funds between accounts within Maendeleo Bank — fast, secure and available 24/7.",
+		body: "Easily transfer funds between accounts within Maendeleo Bank, fast, secure and available 24/7.",
 	},
 	{
 		icon: Send,
 		title: "External transfers",
-		body: "Send money to accounts outside Maendeleo Bank — paying for services, family and friends, or business transactions.",
+		body: "Send money to accounts outside Maendeleo Bank, paying for services, family and friends, or business transactions.",
 	},
 	{
 		icon: Receipt,
 		title: "Bill payments",
-		body: "Pay your utility bills, including electricity, directly from your mobile device — effortlessly and on time.",
+		body: "Pay your utility bills, including electricity, directly from your mobile device, effortlessly and on time.",
 	},
 	{
 		icon: Banknote,
@@ -53,7 +60,7 @@ const ussdServices = [
 	{
 		icon: Wallet,
 		title: "Balance & history",
-		body: "Check account balances, view transaction history and manage your account settings — all from your phone.",
+		body: "Check account balances, view transaction history and manage your account settings, all from your phone.",
 	},
 ];
 
@@ -65,18 +72,19 @@ export default function DigitalBankingPage() {
 				title="Banking at your fingertips"
 				lede="Maendeleo Bank is committed to offering convenient, secure and innovative banking solutions through our mobile banking platform."
 				breadcrumb={[{ label: "Home", href: "/" }, { label: "Digital Banking" }]}
+				stat={{ value: "*150*52#", label: "USSD banking, no smartphone needed" }}
 			/>
 
 			<section className="bg-white">
 				<Container className="py-16 md:py-24">
 					<div className="max-w-2xl">
-						<Eyebrow>MB Mobile — USSD</Eyebrow>
+						<Eyebrow>MB Mobile USSD</Eyebrow>
 						<h2 className="mt-3 text-[32px] font-light leading-[1.15] tracking-display-xl text-ink md:text-[48px]">
 							Dial <span className="tnum text-brand">*150*52#</span>
 						</h2>
 						<p className="mt-4 text-base font-light leading-[1.4] text-ink-secondary">
 							Access our services using the USSD code *150*52# for a seamless
-							banking experience — on any phone, with or without internet.
+							banking experience, on any phone, with or without internet.
 						</p>
 					</div>
 					<div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -110,14 +118,14 @@ export default function DigitalBankingPage() {
 						<FeatureCard
 							icon={Laptop}
 							title="Internet Banking"
-							body="Launched in March 2025 — secure online banking for account access, transfers and payments from any browser."
+							body="Launched in March 2025, secure online banking for account access, transfers and payments from any browser."
 							href="https://ibanking.maendeleobank.co.tz"
 							linkLabel="Log in to Internet Banking"
 						/>
 						<FeatureCard
 							icon={Smartphone}
 							title="MB Mobile App"
-							body="Launched by the Prime Minister on 3 July 2025 alongside our national commercial bank status — banking from your smartphone."
+							body="Launched by the Prime Minister on 3 July 2025 alongside our national commercial bank status, banking from your smartphone."
 							href="/news"
 							linkLabel="Read the launch story"
 						/>
@@ -131,7 +139,7 @@ export default function DigitalBankingPage() {
 						<FeatureCard
 							icon={Banknote}
 							title="Agency banking"
-							body="Deposit, withdraw and pay at over 2,100 Maendeleo Bank agents (wakala) nationwide — including OTP withdrawals via *150*52#."
+							body="Deposit, withdraw and pay at over 2,100 Maendeleo Bank agents (wakala) nationwide, including OTP withdrawals via *150*52#."
 							href="/contact#branches"
 							linkLabel="Our network"
 						/>

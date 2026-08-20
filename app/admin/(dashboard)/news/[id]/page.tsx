@@ -1,7 +1,6 @@
 import { DbError } from "@/components/admin/db-error";
 import { NewsForm } from "@/components/admin/news-form";
 import { PageHeader } from "@/components/admin/page-header";
-import { SetupScreen } from "@/components/admin/setup-screen";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
@@ -9,10 +8,6 @@ import { notFound } from "next/navigation";
 export default async function NewsEditorPage({
 	params,
 }: PageProps<"/admin/news/[id]">) {
-	if (!isSupabaseConfigured()) {
-		return <SetupScreen />;
-	}
-
 	const { id } = await params;
 
 	if (id === "new") {
@@ -25,6 +20,11 @@ export default async function NewsEditorPage({
 				<NewsForm />
 			</>
 		);
+	}
+
+	// DEMO MODE: without Supabase there is no stored post to edit.
+	if (!isSupabaseConfigured()) {
+		notFound();
 	}
 
 	const supabase = await createClient();

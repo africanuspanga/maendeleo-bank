@@ -27,9 +27,13 @@ export function AdminNavUser({ email }: { email: string }) {
 
 	async function handleSignOut() {
 		setSigningOut(true);
-		const supabase = createClient();
-		await supabase.auth.signOut();
-		router.push("/admin/login");
+		try {
+			const supabase = createClient();
+			await supabase.auth.signOut();
+		} catch {
+			// DEMO MODE: Supabase is not configured — nothing to sign out of.
+		}
+		router.push("/");
 		router.refresh();
 	}
 

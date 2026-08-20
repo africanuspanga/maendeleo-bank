@@ -1,95 +1,126 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useActionState } from "react";
+import { submitEnquiry, type EnquiryState } from "@/app/(site)/contact/actions";
 
 const inputClasses =
-	"min-h-[44px] w-full rounded-md border border-[#c9b8d0] bg-white px-3 py-2 text-[15px] font-light text-ink transition-colors placeholder:text-ink-mute focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
+	"min-h-[44px] w-full rounded-md border border-[#c9b8d0] bg-white px-3 py-2 text-[15px] font-normal text-ink transition-colors placeholder:text-ink-mute focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/60";
+
+const labelClasses = "mb-1.5 block text-caption text-ink-mute";
+
+const topics = [
+	"General enquiry",
+	"Personal banking",
+	"Business banking",
+	"Loans",
+	"Digital banking",
+	"Investor relations",
+	"Careers",
+];
+
+const initialState: EnquiryState = { status: "idle", message: "" };
 
 /**
- * Contact form that composes an email in the visitor's own mail client.
- * No backend delivery is claimed — the message opens in their email app,
- * addressed to the bank's published info address.
+ * F49: the form now delivers server-side into the `enquiries` table
+ * (see actions.ts) with a honeypot for spam, instead of composing a
+ * mailto: in the visitor's mail client.
  */
 export function ContactForm() {
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [subject, setSubject] = useState("");
-	const [message, setMessage] = useState("");
+	const [state, formAction, pending] = useActionState(
+		submitEnquiry,
+		initialState,
+	);
 
-	function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-		const body = [`Name: ${name}`, `Email: ${email}`, "", message].join("\n");
-		const mailto = `mailto:info@maendeleobank.co.tz?subject=${encodeURIComponent(
-			subject || "Website enquiry",
-		)}&body=${encodeURIComponent(body)}`;
-		window.location.href = mailto;
+	if (state.status === "success") {
+		return (
+			<div
+				role="status"
+				className="rounded-xl border border-hairline bg-canvas-soft p-8"
+			>
+				<p className="text-heading-sm text-ink">Message sent</p>
+				<p className="mt-2 text-body-md text-ink-mute">{state.message}</p>
+			</div>
+		);
 	}
 
 	return (
-		<form onSubmit={handleSubmit} className="flex flex-col gap-4">
+		<form action={formAction} className="flex flex-col gap-4">
 			<div className="grid gap-4 sm:grid-cols-2">
 				<div>
-					<label htmlFor="contact-name" className="mb-1.5 block text-[13px] font-normal leading-[1.4] tracking-[-0.39px] text-ink-mute">
+					<label htmlFor="contact-name" className={labelClasses}>
 						Full name
 					</label>
 					<input
 						id="contact-name"
+						name="name"
 						required
-						value={name}
-						onChange={(e) => setName(e.target.value)}
 						className={inputClasses}
 						autoComplete="name"
 					/>
 				</div>
 				<div>
-					<label htmlFor="contact-email" className="mb-1.5 block text-[13px] font-normal leading-[1.4] tracking-[-0.39px] text-ink-mute">
+					<label htmlFor="contact-email" className={labelClasses}>
 						Your email
 					</label>
 					<input
 						id="contact-email"
+						name="email"
 						type="email"
 						required
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
 						className={inputClasses}
 						autoComplete="email"
 					/>
 				</div>
 			</div>
-			<div>
-				<label htmlFor="contact-subject" className="mb-1.5 block text-[13px] font-normal leading-[1.4] tracking-[-0.39px] text-ink-mute">
-					Subject
-				</label>
+			{/* Honeypot: hidden from humans, irresistible to bots */}
+			<div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+				<label htmlFor="contact-company">Company</label>
 				<input
-					id="contact-subject"
-					value={subject}
-					onChange={(e) => setSubject(e.target.value)}
-					className={inputClasses}
-					placeholder="e.g. Opening a business account"
+					id="contact-company"
+					name="company"
+					tabIndex={-1}
+					autoComplete="off"
 				/>
 			</div>
 			<div>
-				<label htmlFor="contact-message" className="mb-1.5 block text-[13px] font-normal leading-[1.4] tracking-[-0.39px] text-ink-mute">
+				<label htmlFor="contact-topic" className={labelClasses}>
+					What is it about?
+				</label>
+				<select id="contact-topic" name="topic" className={inputClasses}>
+					{topics.map((topic) => (
+						<option key={topic} value={topic}>
+							{topic}
+						</option>
+					))}
+				</select>
+			</div>
+			<div>
+				<label htmlFor="contact-message" className={labelClasses}>
 					Message
 				</label>
 				<textarea
 					id="contact-message"
+					name="message"
 					required
 					rows={5}
-					value={message}
-					onChange={(e) => setMessage(e.target.value)}
 					className={`${inputClasses} min-h-[120px] resize-y`}
 				/>
 			</div>
+			{state.status === "error" ? (
+				<p role="alert" className="text-body-md text-[#a4252f]">
+					{state.message}
+				</p>
+			) : null}
 			<div className="flex flex-wrap items-center gap-4">
 				<button
 					type="submit"
-					className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-brand px-6 py-2.5 text-base font-normal leading-none text-white transition-colors hover:bg-brand-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 active:bg-brand-press"
+					disabled={pending}
+					className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-brand px-6 py-2.5 text-base font-normal leading-none text-white transition-colors hover:bg-brand-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 active:bg-brand-press disabled:cursor-not-allowed disabled:opacity-60"
 				>
-					Compose email
+					{pending ? "Sending…" : "Send message"}
 				</button>
-				<p className="text-[13px] font-normal leading-[1.4] tracking-[-0.39px] text-ink-mute">
-					Opens in your email app, addressed to info@maendeleobank.co.tz
+				<p className="text-caption text-ink-mute">
+					Delivered straight to our team, no email app needed.
 				</p>
 			</div>
 		</form>

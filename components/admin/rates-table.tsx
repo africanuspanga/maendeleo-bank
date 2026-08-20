@@ -186,7 +186,7 @@ export function RatesTable({ rates }: { rates: ForexRate[] }) {
 										colSpan={6}
 										className="py-10 text-center text-sm text-[#71637a]"
 									>
-										No rates yet — add the first currency below.
+										No rates yet, add the first currency below.
 									</TableCell>
 								</TableRow>
 							) : (

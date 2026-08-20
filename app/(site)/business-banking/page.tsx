@@ -19,7 +19,14 @@ import {
 export const metadata: Metadata = {
 	title: "Business Banking",
 	description:
-		"Business Current, Flexi Fixed, Fixed Deposit and Community accounts from Maendeleo Bank — plus SME support through the SME Clinic and Maendeleo Bank Growth Network.",
+		"Business Current, Flexi Fixed, Fixed Deposit and Community accounts from Maendeleo Bank, plus SME support through the SME Clinic and Maendeleo Bank Growth Network.",
+	alternates: { canonical: "/business-banking" },
+	openGraph: {
+		title: "Business Banking",
+		description:
+			"Business Current, Flexi Fixed, Fixed Deposit and Community accounts from Maendeleo Bank, plus SME support through the SME Clinic and Maendeleo Bank Growth Network.",
+		url: "/business-banking",
+	},
 };
 
 interface Product {
@@ -37,7 +44,7 @@ const products: Product[] = [
 		icon: Briefcase,
 		name: "Business Current Account",
 		description:
-			"A cheque account specifically designed to cater for your business banking needs. Enjoy the convenience of paying by cheque and drawing money without restrictions — ideal for managing and controlling your business transactions anytime, anywhere.",
+			"A cheque account specifically designed to cater for your business banking needs. Enjoy the convenience of paying by cheque and drawing money without restrictions, ideal for managing and controlling your business transactions anytime, anywhere.",
 		features: [
 			"Can be opened and operated in TZS, USD, EURO and GBP",
 			"Opening balance of TZS 100,000 (or USD 100, GBP 100, EURO 100)",
@@ -58,7 +65,7 @@ const products: Product[] = [
 		icon: CalendarClock,
 		name: "Flexi Fixed Account",
 		description:
-			"A fixed deposit account with a maximum tenure of one year. Invest for 12 months or less, with an option to extend at new agreed terms — and choose to receive your interest at the beginning, monthly, or at the end.",
+			"A fixed deposit account with a maximum tenure of one year. Invest for 12 months or less, with an option to extend at new agreed terms, and choose to receive your interest at the beginning, monthly, or at the end.",
 		features: [
 			"Operating currency is TZS",
 			"Minimum fixing amount of TZS 200,000",
@@ -90,7 +97,7 @@ const products: Product[] = [
 		icon: Users,
 		name: "Community Account",
 		description:
-			"An account which can be opened and operated by a religious institution or NGO — with free local transfers and access to treasury and payment facilities.",
+			"An account which can be opened and operated by a religious institution or NGO, with free local transfers and access to treasury and payment facilities.",
 		features: [
 			"Available in TZS, EURO and GBP",
 			"Low opening balance of TZS 50,000 (or EURO 50, GBP 50)",
@@ -116,8 +123,10 @@ export default function BusinessBankingPage() {
 			<PageHero
 				eyebrow="Business Banking"
 				title="Banking that means business"
-				lede="Accounts for traders, SMEs, companies, religious institutions and NGOs — backed by a bank whose strategic focus is enterprise growth across Tanzania."
+				lede="Accounts for traders, SMEs, companies, religious institutions and NGOs, backed by a bank whose strategic focus is enterprise growth across Tanzania."
 				breadcrumb={[{ label: "Home", href: "/" }, { label: "Business Banking" }]}
+				stat={{ value: "SME Clinic", label: "dedicated support for small and medium enterprises" }}
+				accent="green"
 			/>
 
 			<section className="bg-white">
@@ -202,7 +211,7 @@ export default function BusinessBankingPage() {
 								Our SME Clinic brings businesspeople together for professional
 								advice, financial education and innovative business strategies.
 								Through it we launched the Maendeleo Bank Growth Network
-								(MBGN) — a business network connecting customers, strengthening
+								(MBGN), a business network connecting customers, strengthening
 								collaboration and opening new market opportunities.
 							</p>
 							<ul className="mt-8 flex flex-col gap-3">
@@ -233,7 +242,7 @@ export default function BusinessBankingPage() {
 							<p className="mt-3 text-[15px] font-light leading-[1.4] text-ink-mute">
 								Our MSME loans run from <span className="tnum">TZS 3,000,000</span> to{" "}
 								<span className="tnum">TZS 500,000,000</span> with repayments of 6 to
-								36 months matched to your cash flow — plus advisory services on
+								36 months matched to your cash flow, plus advisory services on
 								business skills and management.
 							</p>
 							<ArrowLink href="/loans" className="mt-6">

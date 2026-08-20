@@ -1,69 +1,92 @@
-import {
-	Container,
-	Eyebrow,
-	MeshBlobs,
-	PillLink,
-	Stat,
-} from "@/components/site/primitives";
+import { ChevronDown } from "lucide-react";
+import { Container, PillLink } from "@/components/site/primitives";
+import { Reveal } from "@/components/site/reveal";
+import { HeroVideo } from "@/components/site/home/hero-video";
 
 const stats = [
-	{ value: "6", label: "Branches" },
+	{ value: "6", label: "Branches, Dar es Salaam & Arusha" },
 	{ value: "2,100+", label: "Agents nationwide" },
 	{ value: "280+", label: "Umoja ATM locations" },
-	{ value: "MBP", label: "Listed on the DSE" },
+	{ value: "MBP", label: "Listed on the DSE since 2013" },
 ];
 
 export function Hero() {
 	return (
-		<section className="relative overflow-hidden">
-			<MeshBlobs />
-			<Container className="relative pb-16 pt-14 md:pb-24 md:pt-24">
-				<div className="grid items-center gap-12 lg:grid-cols-2">
-					<div>
-						<Eyebrow>Maendeleo Bank PLC</Eyebrow>
-						<h1 className="mt-4 text-[36px] font-light leading-[1.03] tracking-display-xxl text-ink md:text-[56px]">
-							Together in Progress
-						</h1>
-						<p className="mt-5 max-w-md text-base font-light leading-[1.4] text-ink-secondary">
-							Your trusted partner in development, progress and financial
-							growth across Tanzania.
-						</p>
-						<div className="mt-8 flex flex-wrap gap-3">
-							<PillLink href="/contact">Open an Account</PillLink>
-							<PillLink href="/digital-banking" variant="outline">
-								Explore Digital Banking
-							</PillLink>
-						</div>
+		<section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-brand-plum">
+			{/* Poster guarantees content at 0 ms; the video mounts on top when allowed */}
+			<img
+				src="/hero-poster.webp"
+				alt=""
+				aria-hidden
+				className="absolute inset-0 h-full w-full object-cover"
+			/>
+			<HeroVideo />
+			{/* Cinematic plum grade over the video */}
+			<div
+				aria-hidden
+				className="absolute inset-0 bg-gradient-to-b from-brand-plum/80 via-brand-plum/35 to-brand-plum"
+			/>
+			<div
+				aria-hidden
+				className="absolute inset-0 bg-gradient-to-r from-brand-plum/70 via-transparent to-transparent"
+			/>
+			{/* Brand glow accents */}
+			<div
+				aria-hidden
+				className="pointer-events-none absolute -left-40 top-1/4 h-[480px] w-[480px] rounded-full bg-brand/30 blur-3xl"
+			/>
+			<div
+				aria-hidden
+				className="pointer-events-none absolute -right-32 bottom-0 h-[380px] w-[380px] rounded-full bg-brand-green/20 blur-3xl"
+			/>
+
+			{/* Content, bottom-anchored, centered */}
+			<Container className="relative z-10 flex flex-1 flex-col items-center justify-end pb-10 pt-40 text-center">
+				<Reveal>
+					<h1 className="mx-auto max-w-4xl text-[52px] font-light leading-[0.98] tracking-[-2px] text-white md:text-[88px] lg:text-[104px]">
+						<span className="block">Together in</span>
+						<span className="block text-brand-soft-on-dark">Progress</span>
+					</h1>
+				</Reveal>
+				<Reveal delay={120}>
+					<p className="mx-auto mt-6 max-w-md text-lg font-light leading-[1.5] text-white/75">
+						Your trusted partner in development, progress and financial growth
+						across Tanzania.
+					</p>
+				</Reveal>
+				<Reveal delay={180}>
+					<div className="mt-9 flex flex-wrap justify-center gap-3">
+						<PillLink href="/contact" variant="onDark">
+							Open an Account
+						</PillLink>
+						<PillLink href="/digital-banking" variant="glass">
+							Explore Digital Banking
+						</PillLink>
 					</div>
-					<div>
-						<div className="overflow-hidden rounded-2xl shadow-lift-2">
-							<div className="relative">
-								<video
-									className="aspect-video w-full object-cover"
-									src="/Bandari-Towers-Hero-Video.mp4"
-									autoPlay
-									muted
-									loop
-									playsInline
-									preload="metadata"
-									aria-label="Bandari Towers on the Dar es Salaam waterfront"
-								/>
-								<div
-									aria-hidden
-									className="pointer-events-none absolute inset-0 bg-brand/10"
-								/>
+				</Reveal>
+
+				{/* Glass stats strip */}
+				<Reveal delay={240}>
+					<div className="mt-14 grid grid-cols-2 gap-x-6 gap-y-6 rounded-2xl border border-white/15 bg-white/[0.07] p-6 backdrop-blur-md md:grid-cols-4 md:p-8">
+						{stats.map((stat) => (
+							<div key={stat.label} className="text-center">
+								<p className="tnum text-[28px] font-light leading-[1.05] tracking-[-0.64px] text-white md:text-[36px]">
+									{stat.value}
+								</p>
+								<p className="mt-1.5 text-[12px] font-normal leading-[1.4] tracking-[-0.2px] text-white/60">
+									{stat.label}
+								</p>
 							</div>
-							<p className="bg-white px-5 py-3 text-[13px] font-normal leading-[1.4] tracking-[-0.39px] text-ink-mute">
-								Bandari Towers, Dar es Salaam — home to a growing financial
-								district we are proud to serve.
-							</p>
-						</div>
+						))}
 					</div>
-				</div>
-				<div className="mt-14 grid grid-cols-2 gap-8 border-t border-hairline pt-8 md:mt-16 md:grid-cols-4">
-					{stats.map((stat) => (
-						<Stat key={stat.label} value={stat.value} label={stat.label} />
-					))}
+				</Reveal>
+
+				<div className="mt-8 flex justify-center pb-2">
+					<ChevronDown
+						className="scroll-cue h-5 w-5 text-white/60"
+						strokeWidth={1.5}
+						aria-hidden
+					/>
 				</div>
 			</Container>
 		</section>

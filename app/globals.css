@@ -9,7 +9,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-source-serif);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -44,6 +44,7 @@
   --color-brand-deep: var(--brand-deep);
   --color-brand-press: var(--brand-press);
   --color-brand-soft: var(--brand-soft);
+  --color-brand-soft-on-dark: var(--brand-soft-on-dark);
   --color-brand-subdued: var(--brand-subdued);
   --color-brand-plum: var(--brand-plum);
   --color-brand-green: var(--brand-green);
@@ -62,6 +63,101 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ---------------------------------------------------------------------------
+   Type scale (DESIGN.md §2) — real utilities, each bundling size + line-height
+   + letter-spacing + weight. Weight 300 is display-only (≥32px, F15); body and
+   caption tiers run at 400/500. 12px is the absolute floor; the 11px eyebrow is
+   the single exception (F16). Raw text-[<px>] values are banned in components
+   (F13).
+--------------------------------------------------------------------------- */
+@theme {
+  /* Display tiers — weight 300, negative tracking (the editorial signature) */
+  --text-display-hero: clamp(3.5rem, 5vw + 2rem, 6.5rem);
+  --text-display-hero--line-height: 1.02;
+  --text-display-hero--letter-spacing: -0.02em;
+  --text-display-hero--font-weight: 300;
+
+  --text-display-xxl: 3.5rem;
+  --text-display-xxl--line-height: 1.03;
+  --text-display-xxl--letter-spacing: -1.4px;
+  --text-display-xxl--font-weight: 300;
+
+  --text-display-xl: 3rem;
+  --text-display-xl--line-height: 1.15;
+  --text-display-xl--letter-spacing: -0.96px;
+  --text-display-xl--font-weight: 300;
+
+  --text-display-lg: 2rem;
+  --text-display-lg--line-height: 1.1;
+  --text-display-lg--letter-spacing: -0.64px;
+  --text-display-lg--font-weight: 300;
+
+  /* Below 32px the light weight washes out — display-md and headings run at 400 */
+  --text-display-md: 1.625rem;
+  --text-display-md--line-height: 1.12;
+  --text-display-md--letter-spacing: -0.26px;
+  --text-display-md--font-weight: 400;
+
+  --text-heading-lg: 1.375rem;
+  --text-heading-lg--line-height: 1.1;
+  --text-heading-lg--letter-spacing: -0.22px;
+  --text-heading-lg--font-weight: 400;
+
+  --text-heading-md: 1.25rem;
+  --text-heading-md--line-height: 1.4;
+  --text-heading-md--letter-spacing: -0.2px;
+  --text-heading-md--font-weight: 400;
+
+  --text-heading-sm: 1.125rem;
+  --text-heading-sm--line-height: 1.4;
+  --text-heading-sm--letter-spacing: 0;
+  --text-heading-sm--font-weight: 400;
+
+  /* Body tiers — weight 400 (F15) */
+  --text-body-lg: 1rem;
+  --text-body-lg--line-height: 1.4;
+  --text-body-lg--letter-spacing: 0;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 0.9375rem;
+  --text-body-md--line-height: 1.4;
+  --text-body-md--letter-spacing: 0;
+  --text-body-md--font-weight: 400;
+
+  --text-body-tabular: 0.875rem;
+  --text-body-tabular--line-height: 1.4;
+  --text-body-tabular--letter-spacing: -0.42px;
+  --text-body-tabular--font-weight: 400;
+
+  /* Buttons & labels */
+  --text-button-md: 1rem;
+  --text-button-md--line-height: 1;
+  --text-button-md--letter-spacing: 0;
+  --text-button-md--font-weight: 400;
+
+  --text-button-sm: 0.875rem;
+  --text-button-sm--line-height: 1;
+  --text-button-sm--letter-spacing: 0;
+  --text-button-sm--font-weight: 400;
+
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.4;
+  --text-caption--letter-spacing: -0.39px;
+  --text-caption--font-weight: 400;
+
+  /* 12px floor — legal fine print only (F16) */
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1.4;
+  --text-micro--letter-spacing: 0;
+  --text-micro--font-weight: 400;
+
+  /* Eyebrow — the single sub-12px exception: 11px/500, wide tracking, uppercase */
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1.15;
+  --text-eyebrow--letter-spacing: 0.12em;
+  --text-eyebrow--font-weight: 500;
 }
 
 :root {
@@ -104,6 +200,7 @@
   --brand-deep: #6f2f78;
   --brand-press: #56245d;
   --brand-soft: #a86bb1;
+  --brand-soft-on-dark: #c79bd4;
   --brand-subdued: #f3e9f5;
   --brand-plum: #2a1230;
   --brand-green: #1b9f3c;
@@ -150,6 +247,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* F25 groundwork: a visible keyboard-focus baseline every form component can
+     rely on — 2px solid brand outline, 2px offset */
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "ss01";
@@ -184,7 +287,87 @@
   }
   .shadow-lift-2 {
     box-shadow:
-      0 8px 24px rgba(42, 18, 48, 0.08),
-      0 2px 6px rgba(42, 18, 48, 0.04);
+      0 8px 24px rgba(42, 18, 48, 0.14),
+      0 2px 6px rgba(42, 18, 48, 0.06);
   }
+}
+
+/* ---------- Cinematic motion & polish ---------- */
+::selection {
+	background: #843b8d;
+	color: #fff;
+}
+
+/* Scroll reveal — pairs with components/site/reveal.tsx */
+/* F42: 350ms / 16px — the old 0.9s / 28px left sections ghosted mid-fade */
+.reveal {
+	opacity: 0;
+	transform: translateY(16px);
+	transition:
+		opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+		transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+	transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+	opacity: 1;
+	transform: none;
+}
+
+/* Green "live" pulse dot */
+@keyframes pulse-dot {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 rgba(27, 159, 60, 0.45);
+	}
+	50% {
+		box-shadow: 0 0 0 7px rgba(27, 159, 60, 0);
+	}
+}
+.pulse-dot {
+	animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Slow drift on the hero video */
+@keyframes hero-drift {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(1.07);
+	}
+}
+.hero-video {
+	animation: hero-drift 26s ease-in-out infinite alternate;
+}
+
+/* Scroll cue in the hero */
+@keyframes scroll-cue {
+	0%,
+	100% {
+		transform: translateY(0);
+		opacity: 0.9;
+	}
+	50% {
+		transform: translateY(8px);
+		opacity: 0.4;
+	}
+}
+.scroll-cue {
+	animation: scroll-cue 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+	.pulse-dot,
+	.hero-video,
+	.scroll-cue {
+		animation: none;
+	}
+	html {
+		scroll-behavior: auto;
+	}
 }

@@ -26,7 +26,7 @@ export function PageHeader({
 	);
 }
 
-/** Draft/published status pill — green accent for published, per design tokens. */
+/** Draft/published status pill, green accent for published, per design tokens. */
 export function StatusBadge({ status }: { status: string }) {
 	const published = status === "published";
 	return (

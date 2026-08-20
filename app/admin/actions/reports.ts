@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 import { createClient } from "@/lib/supabase/server";
 import type { ContentStatus, ReportCategory } from "@/lib/supabase/types";
@@ -46,6 +46,7 @@ export async function saveReport(input: ReportInput): Promise<ActionResult> {
 	if (error) return failure(error);
 
 	revalidatePath("/admin/reports");
+	revalidateTag("reports", "max"); // F02: invalidate the public site's cached reads
 	return { ok: true };
 }
 
@@ -63,6 +64,7 @@ export async function setReportStatus(
 	if (error) return failure(error);
 
 	revalidatePath("/admin/reports");
+	revalidateTag("reports", "max"); // F02: invalidate the public site's cached reads
 	return { ok: true };
 }
 
@@ -74,5 +76,6 @@ export async function deleteReport(id: string): Promise<ActionResult> {
 	if (error) return failure(error);
 
 	revalidatePath("/admin/reports");
+	revalidateTag("reports", "max"); // F02: invalidate the public site's cached reads
 	return { ok: true };
 }

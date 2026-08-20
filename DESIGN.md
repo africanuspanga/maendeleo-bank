@@ -16,10 +16,11 @@ This file is the single source of truth. Every page, component, and admin screen
 | `{colors.primary}` | `#843b8d` | The signature purple. Filled CTAs, link emphasis, gradient anchor, brand chrome. Used sparingly per band — one filled pill per section. |
 | `{colors.primary-deep}` | `#6f2f78` | Gradient mid-stop, hover state. |
 | `{colors.primary-press}` | `#56245d` | Pressed state of primary buttons. |
-| `{colors.primary-soft}` | `#a86bb1` | Lighter purple for product-UI accents, chart highlights, icon fills. |
+| `{colors.primary-soft}` | `#a86bb1` | Lighter purple for product-UI accents, chart highlights, icon fills. **Fills, borders and chart series only — never text on dark grounds** (3.9–4.4:1 on plum). |
+| `{colors.primary-soft-on-dark}` | `#c79bd4` | The text-role purple on dark grounds (~6.4:1 on `{colors.brand-dark}`). Eyebrows, links and accent words on plum. |
 | `{colors.primary-bg-subdued}` | `#f3e9f5` | Pale purple fill for soft tags, selected states, subtle bands. |
-| `{colors.accent}` | `#1b9f3c` | The green. ~20% usage only: WhatsApp surface, success states, one accent element per viewport max, gradient edge stop, key stats/highlights. Never competes with purple on the same element. |
-| `{colors.accent-deep}` | `#157a2f` | Green hover/press. |
+| `{colors.accent}` | `#1b9f3c` | The green. ~20% usage only: WhatsApp surface, success states, one accent element per viewport max, gradient edge stop, key stats/highlights. Never competes with purple on the same element. **Fails WCAG AA under white text (3.46:1) — never a text-bearing surface; fills, dots and chart marks only.** |
+| `{colors.accent-deep}` | `#157a2f` | The text-bearing green surface (5.3:1 with white) — accent CTA pills, success chips carrying text. Also green hover/press. |
 | `{colors.accent-bg-subdued}` | `#e6f5ea` | Pale green fill for success chips and highlighted figures. |
 | `{colors.brand-dark}` | `#2a1230` | Deep plum — featured tiers, dashboard chrome, dark bands, footer. |
 
@@ -47,28 +48,35 @@ This file is the single source of truth. Every page, component, and admin screen
 
 ## 2. Typography
 
-**Inter** (Google Fonts, variable) is the family. Sohne is proprietary; Inter at weight 300 with `font-feature-settings: "ss01"` is the canonical substitute. Load weights 300/400/500 only.
+**Two families, each with one job.**
+- **Source Serif 4** (Google Fonts, weights 400/600 only) — the display face: hero, section openers, pull quotes. This is the "national institution" register. Wired to `--font-heading`, used via `font-heading`.
+- **Inter** (Google Fonts, weights 300/400/500 only) — body, UI, numbers, labels, admin. Load with `font-feature-settings: "ss01"`.
 
-| Token | Size | Weight | Line Height | Letter Spacing | Use |
+The scale below lives in code as Tailwind v4 theme tokens in `app/globals.css` — each `text-*` utility bundles size, line-height, letter-spacing and weight. **Use the utility; never raw `text-[<px>]` values in components.**
+
+| Token / utility | Size | Weight | Line Height | Letter Spacing | Use |
 |---|---|---|---|---|---|
-| `{type.display-xxl}` | 56px | 300 | 1.03 | -1.4px | Hero headline |
-| `{type.display-xl}` | 48px | 300 | 1.15 | -0.96px | Section opener |
-| `{type.display-lg}` | 32px | 300 | 1.1 | -0.64px | Card title / sub-section |
-| `{type.display-md}` | 26px | 300 | 1.12 | -0.26px | Compact card title |
-| `{type.heading-lg}` | 22px | 300 | 1.1 | -0.22px | Tier name |
-| `{type.heading-md}` | 20px | 300 | 1.4 | -0.2px | Section sub-heading |
-| `{type.heading-sm}` | 18px | 300 | 1.4 | 0 | Mini-section label |
-| `{type.body-lg}` | 16px | 300 | 1.4 | 0 | Marketing body lead |
-| `{type.body-md}` | 15px | 300 | 1.4 | 0 | Default UI body |
-| `{type.body-tabular}` | 14px | 300 | 1.4 | -0.42px | Money / numeric tables — always with `tnum` |
-| `{type.button-md}` | 16px | 400 | 1.0 | 0 | Pill button label |
-| `{type.button-sm}` | 14px | 400 | 1.0 | 0 | Compact pill label |
-| `{type.caption}` | 13px | 400 | 1.4 | -0.39px | Helper, table labels |
-| `{type.micro}` | 11px | 300 | 1.4 | 0 | Fine print |
-| `{type.micro-cap}` | 10px | 400 | 1.15 | 0.1px | All-caps eyebrow |
+| `{type.display-hero}` → `text-display-hero` | clamp(56px → 104px) | 300 | 1.02 | -0.02em | Homepage hero headline |
+| `{type.display-xxl}` → `text-display-xxl` | 56px | 300 | 1.03 | -1.4px | CTA-band headline |
+| `{type.display-xl}` → `text-display-xl` | 48px | 300 | 1.15 | -0.96px | Section opener |
+| `{type.display-lg}` → `text-display-lg` | 32px | 300 | 1.1 | -0.64px | Card title / sub-section |
+| `{type.display-md}` → `text-display-md` | 26px | 400 | 1.12 | -0.26px | Compact card title |
+| `{type.heading-lg}` → `text-heading-lg` | 22px | 400 | 1.1 | -0.22px | Tier name |
+| `{type.heading-md}` → `text-heading-md` | 20px | 400 | 1.4 | -0.2px | Section sub-heading |
+| `{type.heading-sm}` → `text-heading-sm` | 18px | 400 | 1.4 | 0 | Mini-section label |
+| `{type.body-lg}` → `text-body-lg` | 16px | 400 | 1.4 | 0 | Marketing body lead |
+| `{type.body-md}` → `text-body-md` | 15px | 400 | 1.4 | 0 | Default UI body |
+| `{type.body-tabular}` → `text-body-tabular` | 14px | 400 | 1.4 | -0.42px | Money / numeric tables — always with `tnum` |
+| `{type.button-md}` → `text-button-md` | 16px | 400 | 1.0 | 0 | Pill button label |
+| `{type.button-sm}` → `text-button-sm` | 14px | 400 | 1.0 | 0 | Compact pill label |
+| `{type.caption}` → `text-caption` | 13px | 400 | 1.4 | -0.39px | Helper, table labels |
+| `{type.micro}` → `text-micro` | 12px | 400 | 1.4 | 0 | Legal fine print — the absolute floor |
+| `{type.eyebrow}` → `text-eyebrow` | 11px | 500 | 1.15 | 0.12em | All-caps eyebrow — the **only** sub-12px exception, always uppercase |
 
 **Principles**
-- Weight 300 is the brand voice on display tiers. Never bump display type to 600/700 — emphasis comes from size and color, not weight. 400 max for eyebrows/labels.
+- **Weight 300 is display-only (≥32px).** Body copy runs at 400; captions and the eyebrow at 400/500. Inter Light below 32px loses its strokes on the low-DPI screens most of this audience uses.
+- Never bump display type to 600/700 in Inter — emphasis comes from size and color, not weight. (Source Serif 4 may use its 600 for display emphasis.)
+- **12px is the absolute type floor**, used only for legal fine print. The eyebrow (11px/500, wide tracking, uppercase) is the single exception.
 - Negative tracking on every display tier — the editorial signature.
 - `font-feature-settings: "ss01"` on `<body>` globally.
 - Any number representing money, rates, shares, or counts uses `tnum` + tightened tracking (`{type.body-tabular}`).
@@ -81,7 +89,7 @@ This file is the single source of truth. Every page, component, and admin screen
 - Section padding: 64–96px marketing, 32–48px admin/product.
 - Card internal padding: 32px feature cards, 24px compact.
 - Content container ~1200px centered; gradient mesh and dark bands run edge-to-edge.
-- Breakpoints: <768 mobile (display 56→36px, hamburger nav), 768–1023 tablet (grids 2-up), ≥1024 desktop (grids 3–4-up), ≥1440 wide.
+- Breakpoints: <768 mobile (display-hero clamps 104→56px, hamburger nav), 768–1023 tablet (grids 2-up), ≥1024 desktop (grids 3–4-up), ≥1440 wide.
 
 ---
 
@@ -91,7 +99,7 @@ This file is the single source of truth. Every page, component, and admin screen
 |---|---|---|
 | 0 | Flat | Default |
 | 1 | `0 1px 3px rgba(42,18,48,0.08)` | Card lift on white |
-| 2 | `0 8px 24px rgba(42,18,48,0.08), 0 2px 6px rgba(42,18,48,0.04)` | Floating panels, chat window, dropdowns |
+| 2 | `0 8px 24px rgba(42,18,48,0.14), 0 2px 6px rgba(42,18,48,0.06)` + 1px `{colors.hairline}` border | Floating panels, chat window, dropdowns — the hairline gives the panel a visible edge on white |
 | 3 | Gradient mesh | Atmospheric depth on heroes — not literal shadow |
 
 Radius: `4px` tags · `6px` inputs · `8px` compact cards · `12px` feature/pricing cards · `16px` panels/mockups · `9999px` all buttons and pills.
@@ -106,8 +114,8 @@ Radius: `4px` tags · `6px` inputs · `8px` compact cards · `12px` feature/pric
 Every marketing hero sits on a soft mesh: pale lavender `#efe3f3` → light purple `#c79bd4` → brand purple `#843b8d` → deep plum `#56245d`, with **one** green wash `#bfe8cb → #1b9f3c` at a corner/edge (the 20% accent). Organic blob shapes, heavy blur, upper third of the page; canvas white below. Render as layered absolutely-positioned blurred radial divs or SVG — not a flat linear gradient.
 
 ### Hero Copy (Homepage)
-- Eyebrow: `MAENDELEO BANK PLC` (micro-cap, purple)
-- Title (display-xxl, weight 300): **Together in Progress**
+- Eyebrow: `MAENDELEO BANK PLC` (eyebrow token — 11px/500 uppercase, wide tracking — purple)
+- Title (display-hero, Source Serif 4): **Together in Progress**
 - Sub (body-lg, ink-secondary, ≤15 words): *"Your trusted partner in development, progress and financial growth across Tanzania."*
 - One filled purple pill CTA + one outline pill. Hero video (`/Bandari-Towers-Hero-Video.mp4`) plays muted/looped inside a 16px-radius panel or behind a soft overlay — never full-bleed autoplay chaos.
 
@@ -137,12 +145,12 @@ FX rates, share price, financial figures: `tnum` always. This is the bank's quie
 
 - **`button-primary-pill`**: bg `{colors.primary}`, white text, `{type.button-md}`, `8px 16px`, radius 9999px; hover `{colors.primary-deep}`; press `{colors.primary-press}`.
 - **`button-secondary`**: white bg, `{colors.primary}` text + 1px border, same geometry.
-- **`button-accent-pill`**: `{colors.accent}` bg — used at most once per page (e.g. "Chat on WhatsApp" or a single green CTA).
+- **`button-accent-pill`**: `{colors.accent-deep}` bg with white text (5.3:1) — used at most once per page (e.g. "Chat on WhatsApp" or a single green CTA). `#1b9f3c` is never a text-bearing surface.
 - **`button-on-dark`**: `{colors.brand-dark}` bg, white text.
 - **`card-feature`**, **`card-feature-dark`** (featured invert), **`card-pricing`/`card-tier`**, **`card-stat`** (big tabular figure + caption label).
-- **`text-input`**: white, `{type.body-md}`, `8px 12px`, 6px radius, 1px `{colors.hairline-input}`; focus border swaps to `{colors.primary}` + 2px soft purple ring.
+- **`text-input`**: white, `{type.body-md}`, `8px 12px`, 6px radius, 1px `{colors.hairline-input}`; focus border swaps to `{colors.primary}`. A global `:focus-visible` baseline (2px solid brand outline, 2px offset) applies everywhere — form components may layer rings on top but never weaken it.
 - **`nav-bar`**: white (transparent over mesh until scroll), logo left, zone links center (Personal / Business / Institutional / Investor Relations / About / News / Contact), one filled purple pill right ("Internet Banking" → https://ibanking.maendeleobank.co.tz). Mobile: hamburger → full-screen white sheet.
-- **`pill-tag-soft`**: `{colors.primary-bg-subdued}` bg, `{colors.primary-deep}` text, micro-cap, `4px 8px`, pill.
+- **`pill-tag-soft`**: `{colors.primary-bg-subdued}` bg, `{colors.primary-deep}` text, eyebrow token, `4px 8px`, pill.
 - **`footer-dark`**: `{colors.brand-dark}` bg, ink-mute-on-dark text, 4–6 link columns, contact block, socials, legal row (BoT licence line, DSE ticker MBP, © year). Type `{type.caption}`.
 - **Admin system**: same tokens, denser — 32–48px section padding, sidebar in `{colors.brand-dark}`, tables with `{type.body-tabular}` for figures, hairline borders, no marketing mesh.
 
@@ -153,15 +161,18 @@ FX rates, share price, financial figures: `tnum` always. This is the bank's quie
 **Do**
 - Purple dominates (~80%); green appears as a single deliberate accent per viewport (~20%).
 - One filled pill CTA per band; everything else is outline or link.
-- Weight-300 display type with negative tracking, always.
+- Serif display type for heroes and section openers; weight-300 display type (≥32px) with negative tracking.
 - `tnum` on every rate, amount, and share figure.
 - Real content from `docs/maendeleo-bank-info/` — real product names, real figures, real branch names.
 - Generous whitespace: 96px section gaps on marketing pages.
+- Text-bearing accent surfaces use `#157a2f`; text on dark plum uses `#c79bd4`.
 
 **Don't**
 - No gradients on cards, no glassmorphism, no purple body text, no green buttons next to purple buttons.
 - No emoji in UI, no generic stock-icon blobs, no "AI-generated" look — every card follows §5's card rule.
-- No display type heavier than 400.
+- No weight 300 below 32px; no display type heavier than 600 (Inter display stays at 300).
+- No type below 12px except the 11px/500 eyebrow.
+- No white text on `#1b9f3c`, no `#a86bb1` text on dark grounds.
 - No markdown asterisks in any user-facing string (especially AI chat).
 - No rounded-rectangle buttons — pills only.
 - No lorem ipsum, no placeholder copy anywhere.

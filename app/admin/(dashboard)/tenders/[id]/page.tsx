@@ -3,17 +3,12 @@ import { notFound } from "next/navigation";
 import { DbError } from "@/components/admin/db-error";
 import { PageHeader } from "@/components/admin/page-header";
 import { PostingForm } from "@/components/admin/posting-form";
-import { SetupScreen } from "@/components/admin/setup-screen";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function TenderEditorPage({
 	params,
 }: PageProps<"/admin/tenders/[id]">) {
-	if (!isSupabaseConfigured()) {
-		return <SetupScreen />;
-	}
-
 	const { id } = await params;
 
 	if (id === "new") {
@@ -26,6 +21,11 @@ export default async function TenderEditorPage({
 				<PostingForm kind="tender" />
 			</>
 		);
+	}
+
+	// DEMO MODE: without Supabase there is no stored tender to edit.
+	if (!isSupabaseConfigured()) {
+		notFound();
 	}
 
 	const supabase = await createClient();

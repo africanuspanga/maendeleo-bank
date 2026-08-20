@@ -1,17 +1,26 @@
 import type { Metadata } from "next";
 import { ArrowUpRight, Download, FileText } from "lucide-react";
 import {
-	ArrowLink,
 	Container,
 	Eyebrow,
 	PageHero,
 	SectionHeading,
 } from "@/components/site/primitives";
+import { InvestmentCalculator } from "@/components/site/ir/investment-calculator";
+import { SharePriceCard } from "@/components/site/ir/share-price-card";
+import { getPublishedReports } from "@/lib/content";
 
 export const metadata: Metadata = {
 	title: "Investor Relations",
 	description:
-		"Maendeleo Bank PLC (DSE: MBP, ISIN TZ1996101683) — key figures, annual reports, audited financial statements, AGM books and shareholder information.",
+		"Maendeleo Bank PLC (DSE: MBP, ISIN TZ1996101683), key figures, annual reports, audited financial statements, AGM books and shareholder information.",
+	alternates: { canonical: "/investor-relations" },
+	openGraph: {
+		title: "Investor Relations",
+		description:
+			"Maendeleo Bank PLC (DSE: MBP, ISIN TZ1996101683), key figures, annual reports, audited financial statements, AGM books and shareholder information.",
+		url: "/investor-relations",
+	},
 };
 
 const keyFigures2025 = [
@@ -33,7 +42,7 @@ const shareholders = [
 	{ category: "ELCT Tanzania", shares: "389,626", pct: "1%" },
 ];
 
-const annualReports = [
+const hardcodedAnnualReports = [
 	{
 		label: "Annual Report 2023",
 		href: "https://maendeleobank.co.tz/wp-content/uploads/2024/06/Annual-Report-2023-Final.pdf",
@@ -48,7 +57,7 @@ const annualReports = [
 	},
 ];
 
-const financialStatements = [
+const hardcodedFinancialStatements = [
 	{
 		label: "Audited Financial Statements 2025 (English)",
 		href: "https://maendeleobank.co.tz/wp-content/uploads/2026/04/ENG-Published-Financial-Statements-for-the-Year-2025-Signed.pdf",
@@ -58,12 +67,12 @@ const financialStatements = [
 		href: "https://maendeleobank.co.tz/wp-content/uploads/2026/04/SWA-Published-Financial-Statements-for-the-Year-2025-Signed.pdf",
 	},
 	{
-		label: "Market Discipline Guidelines report — 31 December 2025",
+		label: "Market Discipline Guidelines report, 31 December 2025",
 		href: "https://maendeleobank.co.tz/wp-content/uploads/2026/04/MARKET-DISCIPLINE-GUIDELINES-FOR-BANKS-AND-FINANCIAL-INSTITUTIONS-AS-AT-31-DECEMBER-2025.pdf",
 	},
 ];
 
-const agmBooks = [
+const hardcodedAgmBooks = [
 	{
 		label: "AGM Book 2026 (English preview)",
 		href: "https://maendeleobank.co.tz/wp-content/uploads/2026/06/AGM-2026-ENGLISH-PREVIEW.pdf",
@@ -160,62 +169,46 @@ function ReportTable({
 	);
 }
 
-export default function InvestorRelationsPage() {
+export default async function InvestorRelationsPage() {
+	// F02: reports published in the CMS win; the hardcoded document archive
+	// is the fallback while the CMS is empty or unconfigured.
+	const cmsReports = await getPublishedReports();
+	const byCategory = (category: string, fallback: { label: string; href: string }[]) => {
+		const rows = cmsReports.filter((report) => report.category === category);
+		return rows.length > 0
+			? rows.map((report) => ({
+					label: report.year ? `${report.title} ${report.year}` : report.title,
+					href: report.file_url ?? "#",
+				}))
+			: fallback;
+	};
+	const annualReports = byCategory("annual-report", hardcodedAnnualReports);
+	const financialStatements = [
+		...byCategory("financial-statement", hardcodedFinancialStatements),
+		...cmsReports
+			.filter((report) => report.category === "disclosure")
+			.map((report) => ({
+				label: report.year ? `${report.title} ${report.year}` : report.title,
+				href: report.file_url ?? "#",
+			})),
+	];
+	const agmBooks = byCategory("agm-book", hardcodedAgmBooks);
 	return (
 		<>
 			<PageHero
 				eyebrow="Investor Relations"
 				title="Listed, transparent and growing"
-				lede="Maendeleo Bank PLC has been listed on the Dar es Salaam Stock Exchange since 2013 — the first Tanzanian bank registered on the DSE and a public limited company from inception."
+				lede="Maendeleo Bank PLC has been listed on the Dar es Salaam Stock Exchange since 2013, the first Tanzanian bank registered on the DSE and a public limited company from inception."
 				breadcrumb={[{ label: "Home", href: "/" }, { label: "Investor Relations" }]}
+				stat={{ value: "MBP", label: "listed on the DSE since 2013" }}
+				accent="grey"
 			/>
 
-			{/* Share card */}
+			{/* Share price (RFQ §4.6) + share capital */}
 			<section className="bg-white">
 				<Container className="py-16 md:py-24">
 					<div className="grid gap-6 lg:grid-cols-3">
-						<div className="rounded-xl bg-brand-plum p-8 md:p-10 lg:col-span-2">
-							<Eyebrow className="text-brand-soft">Share information</Eyebrow>
-							<h2 className="mt-3 text-[26px] font-light leading-[1.1] tracking-display-lg text-white md:text-[32px]">
-								Maendeleo Bank PLC — <span className="tnum">MBP</span>
-							</h2>
-							<dl className="mt-8 grid gap-6 sm:grid-cols-3">
-								<div>
-									<dt className="text-[10px] font-normal uppercase leading-[1.15] tracking-[0.1px] text-white/50">
-										Ticker
-									</dt>
-									<dd className="tnum mt-1 text-[22px] font-light text-white">MBP</dd>
-								</div>
-								<div>
-									<dt className="text-[10px] font-normal uppercase leading-[1.15] tracking-[0.1px] text-white/50">
-										ISIN
-									</dt>
-									<dd className="tnum mt-1 text-[22px] font-light text-white">
-										TZ1996101683
-									</dd>
-								</div>
-								<div>
-									<dt className="text-[10px] font-normal uppercase leading-[1.15] tracking-[0.1px] text-white/50">
-										Listed since
-									</dt>
-									<dd className="tnum mt-1 text-[22px] font-light text-white">2013</dd>
-								</div>
-							</dl>
-							<p className="mt-8 border-t border-white/10 pt-6 text-[13px] font-light leading-[1.4] tracking-[-0.39px] text-white/60">
-								Live market data is published by the Dar es Salaam Stock
-								Exchange — direct integration into this page is in progress.
-								For the current share price and trading history, please use
-								the official DSE company profile.
-							</p>
-							<ArrowLink
-								href="https://dse.co.tz/index.php/listed/company/profile?id=8"
-								external
-								onDark
-								className="mt-4"
-							>
-								View MBP on the DSE
-							</ArrowLink>
-						</div>
+						<SharePriceCard />
 						<div className="rounded-xl border border-hairline bg-white p-8 md:p-10">
 							<Eyebrow>Share capital</Eyebrow>
 							<dl className="mt-6 flex flex-col gap-5">
@@ -253,13 +246,27 @@ export default function InvestorRelationsPage() {
 				</Container>
 			</section>
 
+			{/* Investment trend calculator (RFQ §4.6) */}
+			<section className="bg-white">
+				<Container className="border-t border-hairline py-16 md:py-24">
+					<SectionHeading
+						eyebrow="Investment trend"
+						title="What would your investment be worth?"
+						lede="Enter an amount and a past date to see what an MBP shareholding bought then would be worth at the latest documented price."
+					/>
+					<div className="mt-10">
+						<InvestmentCalculator />
+					</div>
+				</Container>
+			</section>
+
 			{/* Key figures */}
 			<section className="bg-canvas-soft">
 				<Container className="py-16 md:py-24">
 					<SectionHeading
 						eyebrow="Financial year 2025"
 						title="Key figures"
-						lede="A year of strong, balanced growth: deposits up 31%, assets up 34%, loans up 23% — while non-performing loans improved to 4.52%."
+						lede="A year of strong, balanced growth: deposits up 31%, assets up 34%, loans up 23%, while non-performing loans improved to 4.52%."
 					/>
 					<div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 						{keyFigures2025.map((figure) => (
@@ -379,8 +386,8 @@ export default function InvestorRelationsPage() {
 							<SectionHeading eyebrow="AGM notices" title="For our shareholders" />
 							<div className="mt-8 rounded-xl border border-hairline bg-white p-8">
 								<p className="text-[15px] font-light leading-[1.4] text-ink-mute">
-									Notices of each Annual General Meeting — including the agenda,
-									venue and hybrid-attendance arrangements — are published and
+									Notices of each Annual General Meeting, including the agenda,
+									venue and hybrid-attendance arrangements, are published and
 									shared with all shareholders ahead of the meeting. Dividend
 									proposals are tabled and approved at the AGM.
 								</p>

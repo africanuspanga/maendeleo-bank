@@ -18,11 +18,19 @@ import {
 	PillLink,
 	SectionHeading,
 } from "@/components/site/primitives";
+import { CompareAccounts } from "@/components/site/compare-accounts";
 
 export const metadata: Metadata = {
 	title: "Personal Banking",
 	description:
-		"Seven personal account types from Maendeleo Bank — Achievers, Salary, Maendeleo Saving, Ahadi, Wekeza, Executive Saving and Fixed Deposit accounts.",
+		"Seven personal account types from Maendeleo Bank, Achievers, Salary, Maendeleo Saving, Ahadi, Wekeza, Executive Saving and Fixed Deposit accounts.",
+	alternates: { canonical: "/personal-banking" },
+	openGraph: {
+		title: "Personal Banking",
+		description:
+			"Seven personal account types from Maendeleo Bank, Achievers, Salary, Maendeleo Saving, Ahadi, Wekeza, Executive Saving and Fixed Deposit accounts.",
+		url: "/personal-banking",
+	},
 };
 
 interface Account {
@@ -95,7 +103,7 @@ const accounts: Account[] = [
 		summary:
 			"An everyday savings account that earns interest on your deposits and keeps your money within reach.",
 		description:
-			"The Maendeleo Saving Account is our standard savings account — simple to open, easy to run, and linked to our ATM and mobile banking services so your money is always accessible.",
+			"The Maendeleo Saving Account is our standard savings account, simple to open, easy to run, and linked to our ATM and mobile banking services so your money is always accessible.",
 		features: [
 			"Can be opened with little or zero balance",
 			"Minimum operating balance applies",
@@ -116,7 +124,7 @@ const accounts: Account[] = [
 		icon: Target,
 		name: "Ahadi Account",
 		summary:
-			"A goal-based savings account that helps you set a monthly savings plan — and stick to it.",
+			"A goal-based savings account that helps you set a monthly savings plan, and stick to it.",
 		description:
 			"Ahadi (Swahili for “promise”) helps you commit to a monthly savings plan and follow it through to your goal. Committed to raising TZS 1,200,000 in a year? This account can help you save TZS 100,000 every month to attain it.",
 		features: [
@@ -124,7 +132,7 @@ const accounts: Account[] = [
 			"No withdrawals allowed during the year",
 			"No monthly charges",
 			"Premium interest rate",
-			"Not linked to an MB ATM card — your savings stay untouched",
+			"Not linked to an MB ATM card, your savings stay untouched",
 			"Not linked to MB Mobile",
 		],
 	},
@@ -135,7 +143,7 @@ const accounts: Account[] = [
 		summary:
 			"For savers who want their money to grow into something more rewarding.",
 		description:
-			"Be it saving for a plot of land, a new car or your house — Wekeza (“invest”) walks with you on the journey and helps you fulfil your savings goals with ease.",
+			"Be it saving for a plot of land, a new car or your house, Wekeza (“invest”) walks with you on the journey and helps you fulfil your savings goals with ease.",
 		features: [
 			"Low opening balance of TZS 20,000",
 			"Withdrawals restricted to four times per year",
@@ -176,7 +184,7 @@ const accounts: Account[] = [
 		summary:
 			"A time deposit with fixed terms and a competitive interest rate, paid on maturity.",
 		description:
-			"Place a fixed amount aside for a predetermined period — from 3 up to 24 months — and earn a competitive interest rate on your investment.",
+			"Place a fixed amount aside for a predetermined period, from 3 up to 24 months, and earn a competitive interest rate on your investment.",
 		features: [
 			"Interest is paid on maturity",
 			"Investment durations from 3 to 24 months",
@@ -195,8 +203,10 @@ export default function PersonalBankingPage() {
 			<PageHero
 				eyebrow="Personal Banking"
 				title="Accounts built around your life"
-				lede="From your first savings as a student to an executive account in four currencies — seven ways to save, earn and grow with Maendeleo Bank."
+				lede="From your first savings as a student to an executive account in four currencies, seven ways to save, earn and grow with Maendeleo Bank."
 				breadcrumb={[{ label: "Home", href: "/" }, { label: "Personal Banking" }]}
+				stat={{ value: "7", label: "account types for every stage of life" }}
+				accent="blue"
 			/>
 
 			<section className="bg-white">
@@ -226,6 +236,24 @@ export default function PersonalBankingPage() {
 							</div>
 						))}
 					</div>
+				</Container>
+			</section>
+
+			{/* Compare accounts (RFQ §4.3): the three core savings products */}
+			<section className="bg-white">
+				<Container className="border-t border-hairline py-16 md:py-24">
+					<SectionHeading
+						eyebrow="Compare accounts"
+						title="Savings accounts, side by side"
+						lede="Maendeleo Saving, Ahadi and Wekeza at a glance, so you can pick the account that matches how you save."
+					/>
+					<div className="mt-10">
+						<CompareAccounts />
+					</div>
+					<p className="mt-6 text-[13px] font-light leading-[1.4] tracking-[-0.39px] text-ink-mute">
+						The bank does not publish numeric interest rates online — call
+						0800750089 (toll free) or visit a branch for current rates.
+					</p>
 				</Container>
 			</section>
 

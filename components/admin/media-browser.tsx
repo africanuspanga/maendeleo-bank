@@ -37,7 +37,7 @@ function sanitizeFileName(name: string): string {
 /**
  * Media library browser for the public `media` storage bucket.
  * Files are organised under fixed folders (news, careers, tenders,
- * reports, site) — matching the folders used by the content editors.
+ * reports, site), matching the folders used by the content editors.
  */
 export function MediaBrowser() {
 	const supabase = createClient();

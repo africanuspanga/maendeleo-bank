@@ -20,7 +20,7 @@ import type { Career, ContentStatus, Tender } from "@/lib/supabase/types";
 type Message = { kind: "success" | "error"; text: string } | null;
 
 /**
- * Shared editor for careers and tenders — both are deadline-driven
+ * Shared editor for careers and tenders, both are deadline-driven
  * postings with an optional PDF. `kind` switches the labels and the
  * second metadata field (location + type vs. reference).
  */

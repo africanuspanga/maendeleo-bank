@@ -7,79 +7,90 @@ import {
 	Eyebrow,
 	PageHero,
 } from "@/components/site/primitives";
+import { getPublishedNews } from "@/lib/content";
+import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = {
 	title: "News & Events",
 	description:
-		"The latest news from Maendeleo Bank PLC — branch openings, digital banking launches, the SME Clinic and community events across Tanzania.",
+		"The latest news from Maendeleo Bank PLC, branch openings, digital banking launches, the SME Clinic and community events across Tanzania.",
+	alternates: { canonical: "/news" },
+	openGraph: {
+		title: "News & Events",
+		description:
+			"The latest news from Maendeleo Bank PLC, branch openings, digital banking launches, the SME Clinic and community events across Tanzania.",
+		url: "/news",
+	},
 };
 
 interface NewsItem {
 	date: string;
 	title: string;
 	summary: string;
-	source: string;
+	href: string;
+	external: boolean;
 }
 
-const featured = {
+const hardcodedFeatured = {
 	date: "24 February 2026",
 	title: "Maendeleo Bank Plc yazindua rasmi tawi la Arusha",
 	summary:
-		"ELCT Presiding Bishop Dr. Alex Malasusa officially inaugurated our Arusha branch — the bank's sixth branch and the first outside the Dar es Salaam region. Managing Director Lomnyaki Saitabau said the branch will serve entrepreneurs, faith-based institutions, companies and families across Arusha and neighbouring regions with financial education and inclusive services.",
-	image: "/Corporate%20images/WhatsApp-Image-2025-07-03-at-15.20.12-1-2048x1365.jpg",
+		"ELCT Presiding Bishop Dr. Alex Malasusa officially inaugurated our Arusha branch, the bank's sixth branch and the first outside the Dar es Salaam region. Managing Director Lomnyaki Saitabau said the branch will serve entrepreneurs, faith-based institutions, companies and families across Arusha and neighbouring regions with financial education and inclusive services.",
+	image: "/images/national-bank-launch-2025-podium-speech.webp",
 	imageAlt: "Maendeleo Bank leadership at the launch of the 2025–2030 Strategic Plan",
-	source: "https://maendeleobank.co.tz/index.php/maendeleo-bank-yazindua-tawi-jipya-arusha/",
+	href: "https://maendeleobank.co.tz/index.php/maendeleo-bank-yazindua-tawi-jipya-arusha/",
+	external: true,
 };
 
-const items: NewsItem[] = [
+const hardcodedItems: NewsItem[] = [
 	{
 		date: "20 March 2026",
 		title: "Whistle Blowing",
 		summary:
-			"The bank reaffirmed its commitment to integrity and ethical conduct, encouraging employees, customers, suppliers and the public to report misconduct in confidence — anonymously if preferred — through its independent whistleblowing channels. Speak up. Stay protected. Help us do better.",
-		source: "https://maendeleobank.co.tz/index.php/2026/03/20/whistle-blowing/",
+			"The bank reaffirmed its commitment to integrity and ethical conduct, encouraging employees, customers, suppliers and the public to report misconduct in confidence, anonymously if preferred, through its independent whistleblowing channels. Speak up. Stay protected. Help us do better.",
+		href: "https://maendeleobank.co.tz/index.php/2026/03/20/whistle-blowing/",		external: true,
 	},
 	{
 		date: "3 July 2025",
 		title: "Maendeleo Bank PLC sasa ni Benki ya Kibiashara ya Kitaifa",
 		summary:
-			"The Prime Minister of the United Republic of Tanzania, Hon. Kassim Majaliwa Majaliwa, officially launched Maendeleo Bank PLC as a national commercial bank — and, at the same ceremony, launched the MB Mobile App and the bank's Strategic Plan for 2025–2030.",
-		source: "https://maendeleobank.co.tz/index.php/2025/11/06/maendeleo-bank-plc-sasa-ni-benki-ya-kibiashara-ya-kitaifa/",
+			"The Prime Minister of the United Republic of Tanzania, Hon. Kassim Majaliwa Majaliwa, officially launched Maendeleo Bank PLC as a national commercial bank, and, at the same ceremony, launched the MB Mobile App and the bank's Strategic Plan for 2025–2030.",
+		href: "https://maendeleobank.co.tz/index.php/2025/11/06/maendeleo-bank-plc-sasa-ni-benki-ya-kibiashara-ya-kitaifa/",		external: true,
 	},
 	{
 		date: "2025",
 		title: "Maendeleo Bank Plc yazindua mtandao wa biashara kupitia SME Clinic",
 		summary:
-			"Through its SME Clinic platform, the bank launched the Maendeleo Bank Growth Network (MBGN) — a business network giving SMEs access to professional advice, financial training, advisory support and new market opportunities.",
-		source: "https://maendeleobank.co.tz/index.php/maendeleo-bank-plc-yazindua-mtandao-wa-biashara-kupitia-sme-clinic/",
+			"Through its SME Clinic platform, the bank launched the Maendeleo Bank Growth Network (MBGN), a business network giving SMEs access to professional advice, financial training, advisory support and new market opportunities.",
+		href: "https://maendeleobank.co.tz/index.php/maendeleo-bank-plc-yazindua-mtandao-wa-biashara-kupitia-sme-clinic/",		external: true,
 	},
 	{
 		date: "2 January 2025",
 		title: "Mkurugenzi Mtendaji aanza kazi rasmi",
 		summary:
 			"Mr. Lomnyaki Saitabau officially started work as Managing Director, introduced by Board Chairman Prof. Ulingeta Obadia Mbamba. Outgoing Acting MD CPA Peter Tarimo congratulated him and thanked staff for their cooperation.",
-		source: "https://maendeleobank.co.tz/index.php/2025/01/02/mkurugenzi-mtendaji-aanza-kazi-rasmi/",
+		href: "https://maendeleobank.co.tz/index.php/2025/01/02/mkurugenzi-mtendaji-aanza-kazi-rasmi/",		external: true,
 	},
 	{
 		date: "6 August 2024",
 		title: "Gawio la hisa na mauzo ya hisa kwa wanahisa wa Maendeleo Bank",
 		summary:
 			"Share dividend and share sale communication for Maendeleo Bank shareholders.",
-		source: "https://maendeleobank.co.tz/index.php/2024/08/06/share-dividend-and-share-sale-for-maendeleo-bank-shareholders/",
+		href: "https://maendeleobank.co.tz/index.php/2024/08/06/share-dividend-and-share-sale-for-maendeleo-bank-shareholders/",		external: true,
 	},
 	{
 		date: "6 August 2024",
 		title: "Overview of Mobile Banking Services",
 		summary:
 			"An overview of the bank's mobile banking services, including USSD banking on *150*52# for transfers and bill payments.",
-		source: "https://maendeleobank.co.tz/index.php/2024/08/06/2572/",
+		href: "https://maendeleobank.co.tz/index.php/2024/08/06/2572/",		external: true,
 	},
 	{
 		date: "2 August 2024",
-		title: "Uzinduzi wa Maendeleo Bank Marathon — Hatua ya Faraja, msimu wa pili",
+		title: "Uzinduzi wa Maendeleo Bank Marathon, Hatua ya Faraja, msimu wa pili",
 		summary:
-			"Board Chairman Prof. Ulingeta Obadia Mbamba led the launch of the second season of the Maendeleo Bank Marathon, held at the Farasi grounds, Oysterbay — a community initiative supporting development projects.",
-		source: "https://maendeleobank.co.tz/index.php/2024/08/02/maendeleo-bank-launch-hatua-ya-faraja-msimu-wa-pili/",
+			"Board Chairman Prof. Ulingeta Obadia Mbamba led the launch of the second season of the Maendeleo Bank Marathon, held at the Farasi grounds, Oysterbay, a community initiative supporting development projects.",
+		href: "https://maendeleobank.co.tz/index.php/2024/08/02/maendeleo-bank-launch-hatua-ya-faraja-msimu-wa-pili/",		external: true,
 	},
 ];
 
@@ -92,13 +103,42 @@ function DateLine({ date }: { date: string }) {
 	);
 }
 
-export default function NewsPage() {
+export default async function NewsPage() {
+	// F02: CMS news wins once anything is published; the hardcoded archive
+	// below is the fallback while the CMS is empty or unconfigured.
+	const cmsNews = await getPublishedNews();
+	const featured =
+		cmsNews.length > 0
+			? {
+					date: cmsNews[0].published_at
+						? formatDate(cmsNews[0].published_at)
+						: "",
+					title: cmsNews[0].title,
+					summary: cmsNews[0].excerpt ?? "",
+					image:
+						cmsNews[0].image_url ??
+						"/images/national-bank-launch-2025-podium-speech.webp",
+					imageAlt: cmsNews[0].title,
+					href: `/news/${cmsNews[0].slug}`,
+					external: false,
+				}
+			: hardcodedFeatured;
+	const items: NewsItem[] =
+		cmsNews.length > 0
+			? cmsNews.slice(1).map((item) => ({
+					date: item.published_at ? formatDate(item.published_at) : "",
+					title: item.title,
+					summary: item.excerpt ?? "",
+					href: `/news/${item.slug}`,
+					external: false,
+				}))
+			: hardcodedItems;
 	return (
 		<>
 			<PageHero
 				eyebrow="News & Events"
 				title="The latest from Maendeleo Bank"
-				lede="Branch openings, digital launches, shareholder news and community events — what the bank is doing across Tanzania."
+				lede="Branch openings, digital launches, shareholder news and community events, what the bank is doing across Tanzania."
 				breadcrumb={[{ label: "Home", href: "/" }, { label: "News" }]}
 			/>
 
@@ -127,8 +167,8 @@ export default function NewsPage() {
 							<p className="mt-4 text-base font-light leading-[1.4] text-ink-secondary">
 								{featured.summary}
 							</p>
-							<ArrowLink href={featured.source} external className="mt-6">
-								Read the original announcement
+							<ArrowLink href={featured.href} external={featured.external} className="mt-6">
+								{featured.external ? "Read the original announcement" : "Read the story"}
 							</ArrowLink>
 						</div>
 					</article>
@@ -147,7 +187,7 @@ export default function NewsPage() {
 								<p className="mt-3 flex-1 text-[15px] font-light leading-[1.4] text-ink-mute">
 									{item.summary}
 								</p>
-								<ArrowLink href={item.source} external className="mt-6">
+								<ArrowLink href={item.href} external={item.external} className="mt-6">
 									Read more
 								</ArrowLink>
 							</article>

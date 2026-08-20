@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 
 /**
- * Shown when a query fails — most commonly because the migration SQL has
+ * Shown when a query fails, most commonly because the migration SQL has
  * not been run in the Supabase project yet.
  */
 export function DbError({ message }: { message: string }) {

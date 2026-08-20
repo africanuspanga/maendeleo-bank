@@ -1,15 +1,25 @@
 import type { Metadata } from "next";
 import { Check, FileText, Phone, Store } from "lucide-react";
 import {
+	ArrowLink,
 	Container,
 	PageHero,
+	pillStyles,
 	SectionHeading,
 } from "@/components/site/primitives";
+import { LoanCalculator } from "@/components/site/loan-calculator";
 
 export const metadata: Metadata = {
 	title: "Loans",
 	description:
-		"Eleven loan products from Maendeleo Bank — Executive, Agribusiness, Jamii, Poultry, Housing Microfinance, Small Group, MSME, SACCOS, Salary, Renewable Energy and Sepa na Bajaji loans.",
+		"Eleven loan products from Maendeleo Bank, Executive, Agribusiness, Jamii, Poultry, Housing Microfinance, Small Group, MSME, SACCOS, Salary, Renewable Energy and Sepa na Bajaji loans.",
+	alternates: { canonical: "/loans" },
+	openGraph: {
+		title: "Loans",
+		description:
+			"Eleven loan products from Maendeleo Bank, Executive, Agribusiness, Jamii, Poultry, Housing Microfinance, Small Group, MSME, SACCOS, Salary, Renewable Energy and Sepa na Bajaji loans.",
+		url: "/loans",
+	},
 };
 
 interface Loan {
@@ -61,7 +71,7 @@ const loans: Loan[] = [
 		amount: "TZS 1M – 30M",
 		tenure: "6 – 8 weeks",
 		highlights: [
-			"For commercial poultry keepers — feeds, medicine and more",
+			"For commercial poultry keepers, feeds, medicine and more",
 			"At least two successful seasons in commercial farming",
 			"Payment after harvesting",
 		],
@@ -84,7 +94,7 @@ const loans: Loan[] = [
 		tenure: "4 – 12 months",
 		highlights: [
 			"Groups of five people with mutual trust and weekly repayments",
-			"No conventional security required — group guarantee instead",
+			"No conventional security required, group guarantee instead",
 			"Financial training available for members",
 		],
 	},
@@ -116,7 +126,7 @@ const loans: Loan[] = [
 		amount: "Based on net salary",
 		tenure: "Flexible",
 		highlights: [
-			"For government and private-sector employees — business, education, a car and more",
+			"For government and private-sector employees, business, education, a car and more",
 			"Credit experience not mandatory",
 			"Early repayment allowed with written notice",
 		],
@@ -154,12 +164,12 @@ const steps = [
 	{
 		icon: FileText,
 		title: "Assessment",
-		body: "Our credit team assesses your application against the product criteria — most loans are processed quickly, and credit history is not mandatory for several products.",
+		body: "Our credit team assesses your application against the product criteria, most loans are processed quickly, and credit history is not mandatory for several products.",
 	},
 	{
 		icon: Phone,
 		title: "Disbursement & support",
-		body: "Once approved, funds are disbursed to your Maendeleo Bank account. Our officers stay with you — including business-skills advice for MSME borrowers.",
+		body: "Once approved, funds are disbursed to your Maendeleo Bank account. Our officers stay with you, including business-skills advice for MSME borrowers.",
 	},
 ];
 
@@ -169,8 +179,9 @@ export default function LoansPage() {
 			<PageHero
 				eyebrow="Loans"
 				title="Credit for every stage of growth"
-				lede="Eleven loan products — from TZS 50,000 group loans to TZS 500 million MSME financing — all insured against death and permanent disability, at affordable or competitive rates on a reducing balance."
+				lede="Eleven loan products, from TZS 50,000 group loans to TZS 500 million MSME financing, all insured against death and permanent disability, at affordable or competitive rates on a reducing balance."
 				breadcrumb={[{ label: "Home", href: "/" }, { label: "Loans" }]}
+				stat={{ value: "11", label: "loan products, TZS 50,000 to TZS 500M" }}
 			/>
 
 			<section className="bg-white">
@@ -186,23 +197,23 @@ export default function LoansPage() {
 								id={loan.id}
 								className="flex h-full scroll-mt-24 flex-col rounded-xl border border-hairline bg-white p-8 transition-shadow hover:shadow-lift-1"
 							>
-								<h3 className="text-[22px] font-light leading-[1.12] tracking-display-md text-ink md:text-[26px]">
+								<h3 className="text-display-md text-ink">
 									{loan.name}
 								</h3>
 								<dl className="mt-4 flex gap-6">
 									<div>
-										<dt className="text-[10px] font-normal uppercase leading-[1.15] tracking-[0.1px] text-ink-mute">
+										<dt className="text-eyebrow uppercase text-ink-mute">
 											Amount
 										</dt>
-										<dd className="tnum mt-1 text-[14px] font-light leading-[1.4] tracking-[-0.42px] text-brand-deep">
+										<dd className="tnum mt-1 text-[14px] font-medium leading-[1.4] tracking-[-0.42px] text-ink">
 											{loan.amount}
 										</dd>
 									</div>
 									<div>
-										<dt className="text-[10px] font-normal uppercase leading-[1.15] tracking-[0.1px] text-ink-mute">
+										<dt className="text-eyebrow uppercase text-ink-mute">
 											Tenure
 										</dt>
-										<dd className="tnum mt-1 text-[14px] font-light leading-[1.4] tracking-[-0.42px] text-brand-deep">
+										<dd className="tnum mt-1 text-[14px] font-medium leading-[1.4] tracking-[-0.42px] text-ink">
 											{loan.tenure}
 										</dd>
 									</div>
@@ -215,19 +226,52 @@ export default function LoansPage() {
 												strokeWidth={1.5}
 												aria-hidden
 											/>
-											<span className="text-[15px] font-light leading-[1.4] text-ink-mute">
+											<span className="text-body-md text-ink-mute">
 												{highlight}
 											</span>
 										</li>
 									))}
 								</ul>
+								{/* F26: every card ends in a real action */}
+								<ArrowLink href="/contact#branches" className="mt-6">
+									Apply at a branch
+								</ArrowLink>
 							</article>
 						))}
+						{/* F30: the twelfth cell — one inverted card per grid (DESIGN.md §5) */}
+						<article className="flex h-full flex-col rounded-xl bg-brand-plum p-8">
+							<h3 className="text-display-md text-white">
+								Not sure which loan fits?
+							</h3>
+							<p className="mt-3 flex-1 text-body-md text-white/70">
+								Talk to a loan officer. We will match your goal, income and
+								cash flow to the right product, and walk you through the
+								documents you need.
+							</p>
+							{/* bare <a>, tel: must not route through next/link */}
+							<a href="tel:0800750089" className={`${pillStyles.onDark} mt-6 self-start`}>
+								Call 0800750089
+							</a>
+						</article>
 					</div>
 				</Container>
 			</section>
 
+			{/* Loan calculator (RFQ §4.3) */}
 			<section className="bg-canvas-soft">
+				<Container className="py-16 md:py-24">
+					<SectionHeading
+						eyebrow="Loan calculator"
+						title="Work out your monthly repayment"
+						lede="Enter the amount, the period and the rate quoted by the bank — repayments are calculated on a reducing balance, the same way our loans are priced."
+					/>
+					<div className="mt-10">
+						<LoanCalculator />
+					</div>
+				</Container>
+			</section>
+
+			<section className="bg-white">
 				<Container className="py-16 md:py-24">
 					<SectionHeading
 						eyebrow="How to apply"
@@ -247,10 +291,10 @@ export default function LoansPage() {
 										Step {index + 1}
 									</span>
 								</div>
-								<h3 className="mt-6 text-[20px] font-light leading-[1.4] tracking-[-0.2px] text-ink">
+								<h3 className="mt-6 text-heading-md text-ink">
 									{step.title}
 								</h3>
-								<p className="mt-2 text-[15px] font-light leading-[1.4] text-ink-mute">
+								<p className="mt-2 text-body-md text-ink-mute">
 									{step.body}
 								</p>
 							</div>

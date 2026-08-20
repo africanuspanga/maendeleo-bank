@@ -5,11 +5,20 @@ import {
 	Container,
 	PageHero,
 } from "@/components/site/primitives";
+import { getPublishedTenders } from "@/lib/content";
+import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = {
 	title: "Tenders",
 	description:
-		"Procurement opportunities at Maendeleo Bank PLC — requests for proposals and tender documents for qualified suppliers and partners.",
+		"Procurement opportunities at Maendeleo Bank PLC, requests for proposals and tender documents for qualified suppliers and partners.",
+	alternates: { canonical: "/tenders" },
+	openGraph: {
+		title: "Tenders",
+		description:
+			"Procurement opportunities at Maendeleo Bank PLC, requests for proposals and tender documents for qualified suppliers and partners.",
+		url: "/tenders",
+	},
 };
 
 interface Tender {
@@ -21,19 +30,19 @@ interface Tender {
 	pdfLabel?: string;
 }
 
-const tenders: Tender[] = [
+const hardcodedTenders: Tender[] = [
 	{
 		icon: "web",
-		title: "Request for Proposal (RFQ) — Corporate Website Revamp & Redesign",
+		title: "Request for Proposal (RFQ): Corporate Website Revamp & Redesign",
 		description:
-			"Maendeleo Bank Plc invites qualified web design and development companies to submit proposals for a full revamp of its corporate website — a modern, secure, multi-audience website that meets the disclosure standards expected of a DSE-listed company and functions as a genuine self-service channel for personal, business and institutional customers.",
+			"Maendeleo Bank Plc invites qualified web design and development companies to submit proposals for a full revamp of its corporate website, a modern, secure, multi-audience website that meets the disclosure standards expected of a DSE-listed company and functions as a genuine self-service channel for personal, business and institutional customers.",
 		deadline: "31 August 2026",
 		pdf: "https://maendeleobank.co.tz/wp-content/uploads/2026/08/Corporate-Website-Redesign-and-Development-RFQ-31.08.26.pdf",
 		pdfLabel: "Download the RFQ (PDF)",
 	},
 	{
 		icon: "events",
-		title: "Request for Proposal (RFP) — Events and Experiential Marketing Services",
+		title: "Request for Proposal (RFP): Events and Experiential Marketing Services",
 		description:
 			"Qualified and experienced events and experiential marketing suppliers are invited to submit proposals for the planning, decor, branding execution and on-site delivery of the bank's corporate events, consistent with designs and briefs approved by the bank.",
 		deadline: "25 August 2026",
@@ -42,7 +51,7 @@ const tenders: Tender[] = [
 	},
 	{
 		icon: "creative",
-		title: "Request for Proposal (RFP) — Creative and Social Media Management Services",
+		title: "Request for Proposal (RFP): Creative and Social Media Management Services",
 		description:
 			"Qualified creative and digital communications agencies are invited to submit proposals for creative and social media management services for the bank.",
 		deadline: "25 August 2026",
@@ -51,9 +60,9 @@ const tenders: Tender[] = [
 	},
 	{
 		icon: "legal",
-		title: "Legal Services — Security Documentation & Registration",
+		title: "Legal Services: Security Documentation & Registration",
 		description:
-			"Qualified, experienced and reputable law firms are invited to submit proposals for legal services relating to security documentation and registration for the bank's credit facilities — strengthening collateral enforceability and supporting the bank's lending operations.",
+			"Qualified, experienced and reputable law firms are invited to submit proposals for legal services relating to security documentation and registration for the bank's credit facilities, strengthening collateral enforceability and supporting the bank's lending operations.",
 	},
 ];
 
@@ -64,7 +73,21 @@ const icons = {
 	creative: FileText,
 };
 
-export default function TendersPage() {
+export default async function TendersPage() {
+	// F02: CMS tenders win when any are published; hardcoded list is the
+	// fallback while the CMS is empty or unconfigured.
+	const cmsTenders = await getPublishedTenders();
+	const tenders: Tender[] =
+		cmsTenders.length > 0
+			? cmsTenders.map((tender) => ({
+					icon: "web" as const,
+					title: tender.title,
+					description: tender.description ?? "",
+					deadline: tender.deadline ? formatDate(tender.deadline) : undefined,
+					pdf: tender.pdf_url ?? undefined,
+					pdfLabel: "Download the tender document (PDF)",
+				}))
+			: hardcodedTenders;
 	return (
 		<>
 			<PageHero
@@ -72,6 +95,7 @@ export default function TendersPage() {
 				title="Tenders and requests for proposals"
 				lede="Maendeleo Bank Plc procures goods and services through open, competitive processes. Download each tender document for full requirements and submission instructions."
 				breadcrumb={[{ label: "Home", href: "/" }, { label: "Tenders" }]}
+				stat={{ value: "Open", label: "competitive procurement, published publicly" }}
 			/>
 
 			<section className="bg-white">
@@ -95,7 +119,7 @@ export default function TendersPage() {
 										</div>
 										{tender.deadline ? (
 											<span className="inline-flex items-center rounded-full bg-brand-green-subdued px-3 py-1 text-[10px] font-normal uppercase leading-[1.15] tracking-[0.1px] text-brand-green-deep">
-												Open — closes {tender.deadline}
+												Open, closes {tender.deadline}
 											</span>
 										) : (
 											<span className="inline-flex items-center rounded-full bg-canvas-soft px-3 py-1 text-[10px] font-normal uppercase leading-[1.15] tracking-[0.1px] text-ink-mute">

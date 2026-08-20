@@ -6,11 +6,20 @@ import {
 	PageHero,
 	SectionHeading,
 } from "@/components/site/primitives";
+import { getPublishedCareers } from "@/lib/content";
+import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = {
 	title: "Careers",
 	description:
-		"Career opportunities at Maendeleo Bank PLC — join a dynamic, innovative and inclusive team driving financial inclusion across Tanzania.",
+		"Career opportunities at Maendeleo Bank PLC, join a dynamic, innovative and inclusive team driving financial inclusion across Tanzania.",
+	alternates: { canonical: "/careers" },
+	openGraph: {
+		title: "Careers",
+		description:
+			"Career opportunities at Maendeleo Bank PLC, join a dynamic, innovative and inclusive team driving financial inclusion across Tanzania.",
+		url: "/careers",
+	},
 };
 
 interface Vacancy {
@@ -24,9 +33,9 @@ interface Vacancy {
 	pdf?: string;
 }
 
-const vacancies: Vacancy[] = [
+const hardcodedVacancies: Vacancy[] = [
 	{
-		title: "Relationship Manager — Trade Finance",
+		title: "Relationship Manager, Trade Finance",
 		location: "Dar es Salaam",
 		positions: "1 position",
 		deadline: "25 May 2026",
@@ -37,32 +46,54 @@ const vacancies: Vacancy[] = [
 		pdf: "https://maendeleobank.co.tz/wp-content/uploads/2026/05/RELATIONSHIP-MANAGER.pdf",
 	},
 	{
-		title: "Relationship Officers — SME (3) and Micro (1)",
+		title: "Relationship Officers, SME (3) and Micro (1)",
 		location: "Arusha",
 		positions: "4 positions",
 		deadline: "3 October 2025",
 		closed: true,
 		summary:
-			"Manage and grow a portfolio of SME clients with tailored financial solutions — identifying business opportunities, assessing credit needs, preparing loan proposals and ensuring timely service delivery.",
+			"Manage and grow a portfolio of SME clients with tailored financial solutions, identifying business opportunities, assessing credit needs, preparing loan proposals and ensuring timely service delivery.",
 		requirements:
 			"Bachelor's degree in business management, banking and finance or a related field. Two years' experience in similar roles in banking or financial institutions is preferred.",
 		pdf: "https://maendeleobank.co.tz/wp-content/uploads/2025/09/job-post-arusha.pdf",
 	},
 	{
-		title: "Bank Officers — Teller, Customer Service, Back Office, Agency Banking, Direct Sales",
+		title: "Bank Officers, Teller, Customer Service, Back Office, Agency Banking, Direct Sales",
 		location: "Arusha",
 		positions: "11 positions",
 		deadline: "3 October 2025",
 		closed: true,
 		summary:
-			"Deliver high-quality customer service while performing teller and operational duties — handling day-to-day transactions, responding to enquiries, promoting banking products and ensuring compliance with internal policies and regulatory standards.",
+			"Deliver high-quality customer service while performing teller and operational duties, handling day-to-day transactions, responding to enquiries, promoting banking products and ensuring compliance with internal policies and regulatory standards.",
 		requirements:
 			"Bachelor's degree from a recognized university. Experience in similar roles in banking or financial institutions is an added advantage.",
 		pdf: "https://maendeleobank.co.tz/wp-content/uploads/2025/09/job-post-arusha.pdf",
 	},
 ];
 
-export default function CareersPage() {
+export default async function CareersPage() {
+	// F02: CMS vacancies win when HR has published any; the hardcoded list
+	// below is the fallback while the CMS is empty or unconfigured.
+	const cmsCareers = await getPublishedCareers();
+	const now = Date.now();
+	const vacancies: Vacancy[] =
+		cmsCareers.length > 0
+			? cmsCareers.map((job) => {
+					const deadlineMs = job.deadline
+						? new Date(job.deadline).getTime()
+						: null;
+					return {
+						title: job.title,
+						location: job.location ?? "Dar es Salaam",
+						positions: job.type ?? "",
+						deadline: job.deadline ? formatDate(job.deadline) : "",
+						closed: deadlineMs !== null ? deadlineMs < now : false,
+						summary: job.description ?? "",
+						requirements: "",
+						pdf: job.pdf_url ?? undefined,
+					};
+				})
+			: hardcodedVacancies;
 	return (
 		<>
 			<PageHero
@@ -96,7 +127,7 @@ export default function CareersPage() {
 												{job.title}
 											</h3>
 											<p className="mt-1 text-[13px] font-normal leading-[1.4] tracking-[-0.39px] text-ink-mute">
-												{job.location} · {job.positions}
+												{[job.location, job.positions].filter(Boolean).join(" · ")}
 											</p>
 										</div>
 									</div>
@@ -107,16 +138,22 @@ export default function CareersPage() {
 												: "bg-brand-green-subdued text-brand-green-deep"
 										}`}
 									>
-										{job.closed ? `Closed — deadline was ${job.deadline}` : `Open — closes ${job.deadline}`}
+										{job.deadline
+											? job.closed
+												? `Closed. Deadline was ${job.deadline}`
+												: `Open, closes ${job.deadline}`
+											: "Open"}
 									</span>
 								</div>
 								<p className="mt-5 max-w-3xl text-[15px] font-light leading-[1.4] text-ink-mute">
 									{job.summary}
 								</p>
-								<p className="mt-3 max-w-3xl text-[15px] font-light leading-[1.4] text-ink-secondary">
-									<span className="text-ink">Requirements: </span>
-									{job.requirements}
-								</p>
+								{job.requirements ? (
+									<p className="mt-3 max-w-3xl text-[15px] font-light leading-[1.4] text-ink-secondary">
+										<span className="text-ink">Requirements: </span>
+										{job.requirements}
+									</p>
+								) : null}
 								{job.pdf ? (
 									<ArrowLink href={job.pdf} external className="mt-5">
 										<span className="inline-flex items-center gap-1.5">
@@ -131,7 +168,7 @@ export default function CareersPage() {
 
 					<p className="mt-8 text-[13px] font-normal leading-[1.4] tracking-[-0.39px] text-ink-mute">
 						These listings are shown for reference. New vacancies are posted on
-						this page as they open — check back soon.
+						this page as they open, check back soon.
 					</p>
 				</Container>
 			</section>
@@ -166,7 +203,7 @@ export default function CareersPage() {
 								An inclusive workplace
 							</h3>
 							<p className="mt-2 text-[15px] font-light leading-[1.4] text-ink-mute">
-								Maendeleo Bank Plc promotes an inclusive workplace — qualified
+								Maendeleo Bank Plc promotes an inclusive workplace, qualified
 								women and people with disability are encouraged to apply. All
 								positions carry a competitive salary and packages commensurate
 								with qualifications and experience.

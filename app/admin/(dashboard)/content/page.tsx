@@ -1,7 +1,6 @@
 import { ContentForm, type ContentValues } from "@/components/admin/content-form";
 import { DbError } from "@/components/admin/db-error";
 import { PageHeader } from "@/components/admin/page-header";
-import { SetupScreen } from "@/components/admin/setup-screen";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 
@@ -21,12 +20,12 @@ function asRecord(value: unknown): Record<string, string> {
 }
 
 export default async function ContentPage() {
-	if (!isSupabaseConfigured()) {
-		return <SetupScreen />;
-	}
-
-	const supabase = await createClient();
-	const { data, error } = await supabase.from("site_content").select("*");
+	// DEMO MODE: without Supabase, render the form with empty values.
+	const result = isSupabaseConfigured()
+		? await (await createClient()).from("site_content").select("*")
+		: null;
+	const data = result?.data ?? null;
+	const error = result?.error ?? null;
 
 	if (error) {
 		return (

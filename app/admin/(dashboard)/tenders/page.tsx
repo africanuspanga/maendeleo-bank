@@ -14,23 +14,22 @@ import {
 import { DbError } from "@/components/admin/db-error";
 import { PageHeader, StatusBadge } from "@/components/admin/page-header";
 import { RowActions } from "@/components/admin/row-actions";
-import { SetupScreen } from "@/components/admin/setup-screen";
 import { formatDate } from "@/components/admin/format";
 import { deleteTender, setTenderStatus } from "@/app/admin/actions/tenders";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function TendersPage() {
-	if (!isSupabaseConfigured()) {
-		return <SetupScreen />;
-	}
-
-	const supabase = await createClient();
-	const { data, error } = await supabase
-		.from("tenders")
-		.select("*")
-		.order("deadline", { ascending: false, nullsFirst: false })
-		.order("updated_at", { ascending: false });
+	// DEMO MODE: without Supabase, render the page with empty data.
+	const result = isSupabaseConfigured()
+		? await (await createClient())
+				.from("tenders")
+				.select("*")
+				.order("deadline", { ascending: false, nullsFirst: false })
+				.order("updated_at", { ascending: false })
+		: null;
+	const data = result?.data ?? null;
+	const error = result?.error ?? null;
 
 	if (error) {
 		return (
@@ -75,7 +74,7 @@ export default async function TendersPage() {
 										colSpan={5}
 										className="py-10 text-center text-sm text-[#71637a]"
 									>
-										No tenders yet — create the first one.
+										No tenders yet, create the first one.
 									</TableCell>
 								</TableRow>
 							) : (

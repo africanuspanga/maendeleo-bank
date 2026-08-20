@@ -1,34 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Sparkles } from "lucide-react";
 import { ChatPanel } from "@/components/chat/chat-panel";
-
-// TODO: confirm official WhatsApp business number with client — the bank's
-// website shows a WhatsApp icon but publishes no number (see
-// docs/maendeleo-bank-info/13-contact.md). Using the head-office line as a
-// wa.me placeholder.
-const WHATSAPP_URL = "https://wa.me/255220511518";
 
 export function FloatingActions() {
   const pathname = usePathname();
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const launcherRef = useRef<HTMLButtonElement>(null);
 
   // Never render on admin screens.
   if (pathname.startsWith("/admin")) return null;
 
   return (
     <>
-      {/* Scoped keyframes: one-time pulse ring, panel entrance, typing dots.
-          All disabled under prefers-reduced-motion. */}
+      {/* Scoped keyframes: gentle bob on the launcher, panel entrance, typing
+          dots. All disabled under prefers-reduced-motion. */}
       <style>{`
-        @keyframes mb-pulse-ring {
-          0% { box-shadow: 0 0 0 0 rgba(132, 59, 141, 0.45); }
-          100% { box-shadow: 0 0 0 18px rgba(132, 59, 141, 0); }
+        @keyframes mb-float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-7px); }
         }
-        .mb-pulse-once { animation: mb-pulse-ring 1.8s ease-out 1 0.8s; }
+        .mb-float { animation: mb-float 2.8s ease-in-out infinite; }
         @keyframes mb-panel-in {
           from { opacity: 0; transform: translateY(16px); }
           to { opacity: 1; transform: translateY(0); }
@@ -40,55 +34,41 @@ export function FloatingActions() {
         }
         .mb-typing-dot { animation: mb-typing 1.2s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce) {
-          .mb-pulse-once, .mb-panel, .mb-typing-dot { animation: none; }
+          .mb-float, .mb-panel, .mb-typing-dot { animation: none; }
         }
       `}</style>
 
-      {isChatOpen && <ChatPanel onClose={() => setIsChatOpen(false)} />}
+      {isChatOpen && (
+        <ChatPanel
+          onClose={() => setIsChatOpen(false)}
+          returnFocusRef={launcherRef}
+        />
+      )}
 
-      <div className="fixed right-6 bottom-6 z-50 flex flex-col items-end gap-4">
+      {/* Permanent launcher: always visible (never hides on scroll). */}
+      <div className="fixed right-4 bottom-4 z-50 sm:right-6 sm:bottom-6">
         {!isChatOpen && (
-          <div className="group relative">
+          <div className="mb-float flex items-center gap-3">
+            <span className="pointer-events-none rounded-full border border-hairline bg-white px-3.5 py-2 text-xs font-medium whitespace-nowrap text-ink shadow-lift-2">
+              Let&apos;s Chat
+            </span>
             <button
+              ref={launcherRef}
               type="button"
               onClick={() => setIsChatOpen(true)}
-              aria-label="Open Maendeleo Assistant"
-              className="mb-pulse-once flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-lift-2 transition-colors hover:bg-brand-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+              aria-label="Open Maendeleo Assistant — Let's Chat"
+              className="block h-14 w-14 overflow-hidden rounded-full bg-white shadow-lift-2 transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:h-16 sm:w-16"
             >
-              <Sparkles className="h-6 w-6" aria-hidden="true" />
+              <Image
+                src="/Chat-Bot.png"
+                alt=""
+                width={64}
+                height={64}
+                className="h-full w-full object-cover"
+              />
             </button>
-            <span
-              role="tooltip"
-              className="pointer-events-none absolute top-1/2 right-full mr-3 -translate-y-1/2 rounded-md bg-brand-plum px-2.5 py-1.5 text-xs whitespace-nowrap text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
-            >
-              Maendeleo Assistant
-            </span>
           </div>
         )}
-
-        <div className="group relative">
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Chat on WhatsApp"
-            className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-green shadow-lift-2 transition-colors hover:bg-brand-green-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green"
-          >
-            <Image
-              src="/whatsapp.png"
-              alt=""
-              width={30}
-              height={30}
-              className="h-[30px] w-[30px] object-contain"
-            />
-          </a>
-          <span
-            role="tooltip"
-            className="pointer-events-none absolute top-1/2 right-full mr-3 -translate-y-1/2 rounded-md bg-brand-plum px-2.5 py-1.5 text-xs whitespace-nowrap text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
-          >
-            Chat on WhatsApp
-          </span>
-        </div>
       </div>
     </>
   );

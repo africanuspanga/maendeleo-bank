@@ -15,7 +15,6 @@ import {
 import { DbError } from "@/components/admin/db-error";
 import { PageHeader, StatusBadge } from "@/components/admin/page-header";
 import { RowActions } from "@/components/admin/row-actions";
-import { SetupScreen } from "@/components/admin/setup-screen";
 import { deleteReport, setReportStatus } from "@/app/admin/actions/reports";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
@@ -29,16 +28,16 @@ const categoryLabels: Record<ReportCategory, string> = {
 };
 
 export default async function ReportsPage() {
-	if (!isSupabaseConfigured()) {
-		return <SetupScreen />;
-	}
-
-	const supabase = await createClient();
-	const { data, error } = await supabase
-		.from("reports")
-		.select("*")
-		.order("year", { ascending: false, nullsFirst: false })
-		.order("title", { ascending: true });
+	// DEMO MODE: without Supabase, render the page with empty data.
+	const result = isSupabaseConfigured()
+		? await (await createClient())
+				.from("reports")
+				.select("*")
+				.order("year", { ascending: false, nullsFirst: false })
+				.order("title", { ascending: true })
+		: null;
+	const data = result?.data ?? null;
+	const error = result?.error ?? null;
 
 	if (error) {
 		return (
@@ -84,7 +83,7 @@ export default async function ReportsPage() {
 										colSpan={6}
 										className="py-10 text-center text-sm text-[#71637a]"
 									>
-										No reports yet — add the first document.
+										No reports yet, add the first document.
 									</TableCell>
 								</TableRow>
 							) : (

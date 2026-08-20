@@ -21,7 +21,14 @@ import {
 export const metadata: Metadata = {
 	title: "About Us",
 	description:
-		"Maendeleo Bank PLC — a Tanzanian national commercial bank founded on the initiative of the ELCT Eastern and Coastal Diocese, listed on the Dar es Salaam Stock Exchange since 2013.",
+		"Maendeleo Bank PLC, a Tanzanian national commercial bank founded on the initiative of the ELCT Eastern and Coastal Diocese, listed on the Dar es Salaam Stock Exchange since 2013.",
+	alternates: { canonical: "/about" },
+	openGraph: {
+		title: "About Us",
+		description:
+			"Maendeleo Bank PLC, a Tanzanian national commercial bank founded on the initiative of the ELCT Eastern and Coastal Diocese, listed on the Dar es Salaam Stock Exchange since 2013.",
+		url: "/about",
+	},
 };
 
 const timeline: { year: string; title: string; body: string }[] = [
@@ -38,12 +45,12 @@ const timeline: { year: string; title: string; body: string }[] = [
 	{
 		year: "2013",
 		title: "Operations and listing",
-		body: "Banking operations commence on 9 September 2013. In the same year the bank lists on the Dar es Salaam Stock Exchange — an early commitment to transparency and public participation.",
+		body: "Banking operations commence on 9 September 2013. In the same year the bank lists on the Dar es Salaam Stock Exchange, an early commitment to transparency and public participation.",
 	},
 	{
 		year: "2025",
 		title: "A national commercial bank",
-		body: "Following approval by the Bank of Tanzania, Maendeleo Bank becomes a fully licensed national commercial bank — officially launched by the Prime Minister, Hon. Kassim Majaliwa Majaliwa, on 3 July 2025, alongside the MB Mobile App and the 2025–2030 Strategic Plan.",
+		body: "Following approval by the Bank of Tanzania, Maendeleo Bank becomes a fully licensed national commercial bank, officially launched by the Prime Minister, Hon. Kassim Majaliwa Majaliwa, on 3 July 2025, alongside the MB Mobile App and the 2025–2030 Strategic Plan.",
 	},
 	{
 		year: "2025",
@@ -53,7 +60,7 @@ const timeline: { year: string; title: string; body: string }[] = [
 	{
 		year: "2026",
 		title: "Beyond Dar es Salaam",
-		body: "On 24 February 2026 the bank opens its sixth branch — in Arusha, the first outside the Dar es Salaam region — officiated by ELCT Presiding Bishop Dr. Alex Malasusa.",
+		body: "On 24 February 2026 the bank opens its sixth branch, in Arusha, the first outside the Dar es Salaam region, officiated by ELCT Presiding Bishop Dr. Alex Malasusa.",
 	},
 ];
 
@@ -151,8 +158,9 @@ export default function AboutPage() {
 			<PageHero
 				eyebrow="About us"
 				title="Banking on progress, together"
-				lede="Maendeleo Bank PLC serves retail customers, MSMEs and institutions with deposit accounts, credit facilities and digital banking — regulated by the Bank of Tanzania and listed on the Dar es Salaam Stock Exchange."
+				lede="Maendeleo Bank PLC serves retail customers, MSMEs and institutions with deposit accounts, credit facilities and digital banking, regulated by the Bank of Tanzania and listed on the Dar es Salaam Stock Exchange."
 				breadcrumb={[{ label: "Home", href: "/" }, { label: "About us" }]}
+				stat={{ value: "2011", label: "incorporated · DSE-listed since 2013" }}
 			/>
 
 			{/* Who we are */}
@@ -180,14 +188,14 @@ export default function AboutPage() {
 						<div className="rounded-xl border border-hairline bg-canvas-soft p-8">
 							<Eyebrow>Our reach</Eyebrow>
 							<div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-8">
-								<Stat value="6" label="Branches — five in Dar es Salaam, one in Arusha" />
+								<Stat value="6" label="Branches, five in Dar es Salaam, one in Arusha" />
 								<Stat value="2,100+" label="Agency banking agents nationwide" />
 								<Stat value="280+" label="Umoja ATM locations across the country" />
 								<Stat value="MBP" label="Listed on the Dar es Salaam Stock Exchange" />
 							</div>
 							<p className="mt-8 text-[15px] font-light leading-[1.4] text-ink-mute">
 								Customers can deposit, withdraw and make payments through agents
-								without visiting a branch — and access accounts, transfers and
+								without visiting a branch, and access accounts, transfers and
 								bill payments at any time through our digital channels.
 							</p>
 						</div>
@@ -275,7 +283,7 @@ export default function AboutPage() {
 					<SectionHeading
 						eyebrow="Leadership"
 						title="Board of Directors"
-						lede="The bank is guided by a Board of Directors and structured committees overseeing risk, audit and compliance — reinforcing transparency, accountability and customer trust."
+						lede="The bank is guided by a Board of Directors and structured committees overseeing risk, audit and compliance, reinforcing transparency, accountability and customer trust."
 					/>
 					<div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						{board.map((person) => (
@@ -300,7 +308,7 @@ export default function AboutPage() {
 					<div className="grid items-center gap-12 lg:grid-cols-2">
 						<div className="relative overflow-hidden rounded-2xl shadow-lift-2">
 							<Image
-								src="/Corporate%20images/WhatsApp-Image-2025-07-21-at-16.21.34-1.jpg"
+								src="/images/national-bank-launch-2025-ceremony-group.webp"
 								alt="Launch of Maendeleo Bank as a national commercial bank, the MB Mobile App and the 2025–2030 Strategic Plan"
 								width={2560}
 								height={1706}
@@ -314,7 +322,7 @@ export default function AboutPage() {
 							</h2>
 							<p className="mt-5 text-base font-light leading-[1.4] text-ink-secondary">
 								Born of the Evangelical Lutheran Church in Tanzania, Maendeleo
-								Bank has always existed to serve — congregations, small
+								Bank has always existed to serve, congregations, small
 								businesses, SACCOS and families. Today, as a publicly listed
 								national commercial bank, that founding purpose scales to all of
 								Tanzania while individual investors remain the bank&apos;s

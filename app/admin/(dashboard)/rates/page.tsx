@@ -1,22 +1,21 @@
 import { DbError } from "@/components/admin/db-error";
 import { PageHeader } from "@/components/admin/page-header";
 import { RatesTable } from "@/components/admin/rates-table";
-import { SetupScreen } from "@/components/admin/setup-screen";
 import { formatDateTime } from "@/components/admin/format";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function RatesPage() {
-	if (!isSupabaseConfigured()) {
-		return <SetupScreen />;
-	}
-
-	const supabase = await createClient();
-	const { data, error } = await supabase
-		.from("forex_rates")
-		.select("*")
-		.order("sort_order", { ascending: true })
-		.order("created_at", { ascending: true });
+	// DEMO MODE: without Supabase, render the page with empty data.
+	const result = isSupabaseConfigured()
+		? await (await createClient())
+				.from("forex_rates")
+				.select("*")
+				.order("sort_order", { ascending: true })
+				.order("created_at", { ascending: true })
+		: null;
+	const data = result?.data ?? null;
+	const error = result?.error ?? null;
 
 	if (error) {
 		return (

@@ -11,7 +11,6 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PageHeader, StatusBadge } from "@/components/admin/page-header";
-import { SetupScreen } from "@/components/admin/setup-screen";
 import { formatDateTime } from "@/components/admin/format";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
@@ -26,51 +25,50 @@ type ActivityItem = {
 };
 
 export default async function AdminDashboardPage() {
-	if (!isSupabaseConfigured()) {
-		return <SetupScreen />;
-	}
-
-	const supabase = await createClient();
+	// DEMO MODE: without Supabase, render the dashboard with zeroed data.
+	const supabase = isSupabaseConfigured() ? await createClient() : null;
 
 	const [newsCount, reportsCount, careersCount, latestRate, recentNews, recentReports] =
-		await Promise.all([
-			supabase
-				.from("news")
-				.select("id", { count: "exact", head: true })
-				.eq("status", "published"),
-			supabase.from("reports").select("id", { count: "exact", head: true }),
-			supabase
-				.from("careers")
-				.select("id", { count: "exact", head: true })
-				.eq("status", "published"),
-			supabase
-				.from("forex_rates")
-				.select("updated_at")
-				.order("updated_at", { ascending: false })
-				.limit(1)
-				.maybeSingle(),
-			supabase
-				.from("news")
-				.select("id, title, status, updated_at")
-				.order("updated_at", { ascending: false })
-				.limit(4),
-			supabase
-				.from("reports")
-				.select("id, title, status, updated_at")
-				.order("updated_at", { ascending: false })
-				.limit(4),
-		]);
+		supabase
+			? await Promise.all([
+					supabase
+						.from("news")
+						.select("id", { count: "exact", head: true })
+						.eq("status", "published"),
+					supabase.from("reports").select("id", { count: "exact", head: true }),
+					supabase
+						.from("careers")
+						.select("id", { count: "exact", head: true })
+						.eq("status", "published"),
+					supabase
+						.from("forex_rates")
+						.select("updated_at")
+						.order("updated_at", { ascending: false })
+						.limit(1)
+						.maybeSingle(),
+					supabase
+						.from("news")
+						.select("id, title, status, updated_at")
+						.order("updated_at", { ascending: false })
+						.limit(4),
+					supabase
+						.from("reports")
+						.select("id, title, status, updated_at")
+						.order("updated_at", { ascending: false })
+						.limit(4),
+				])
+			: [null, null, null, null, null, null];
 
 	const stats = [
 		{
 			label: "Published news",
-			value: newsCount.error ? "—" : String(newsCount.count ?? 0),
+			value: newsCount?.error ? "—" : String(newsCount?.count ?? 0),
 			icon: <NewspaperIcon className="size-4 text-[#843b8d]" />,
 			href: "/admin/news",
 		},
 		{
 			label: "Rates last updated",
-			value: latestRate.data
+			value: latestRate?.data
 				? formatDateTime(latestRate.data.updated_at)
 				: "—",
 			icon: <PercentIcon className="size-4 text-[#843b8d]" />,
@@ -78,20 +76,20 @@ export default async function AdminDashboardPage() {
 		},
 		{
 			label: "Investor reports",
-			value: reportsCount.error ? "—" : String(reportsCount.count ?? 0),
+			value: reportsCount?.error ? "—" : String(reportsCount?.count ?? 0),
 			icon: <FilesIcon className="size-4 text-[#843b8d]" />,
 			href: "/admin/reports",
 		},
 		{
 			label: "Open careers",
-			value: careersCount.error ? "—" : String(careersCount.count ?? 0),
+			value: careersCount?.error ? "—" : String(careersCount?.count ?? 0),
 			icon: <BriefcaseIcon className="size-4 text-[#843b8d]" />,
 			href: "/admin/careers",
 		},
 	];
 
 	const activity: ActivityItem[] = [
-		...(recentNews.data ?? []).map((item) => ({
+		...(recentNews?.data ?? []).map((item) => ({
 			id: item.id,
 			kind: "News" as const,
 			title: item.title,
@@ -99,7 +97,7 @@ export default async function AdminDashboardPage() {
 			updated_at: item.updated_at,
 			href: `/admin/news/${item.id}`,
 		})),
-		...(recentReports.data ?? []).map((item) => ({
+		...(recentReports?.data ?? []).map((item) => ({
 			id: item.id,
 			kind: "Report" as const,
 			title: item.title,
@@ -150,7 +148,7 @@ export default async function AdminDashboardPage() {
 					<CardContent className="flex flex-col divide-y divide-[#e9e2ec]">
 						{activity.length === 0 ? (
 							<p className="py-6 text-center text-sm text-[#71637a]">
-								Nothing yet — publish your first news item or report.
+								Nothing yet, publish your first news item or report.
 							</p>
 						) : (
 							activity.map((item) => (

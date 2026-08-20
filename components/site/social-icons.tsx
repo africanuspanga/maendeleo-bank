@@ -1,5 +1,5 @@
 /**
- * Brand/social icons as inline SVGs — lucide-react no longer ships brand
+ * Brand/social icons as inline SVGs, lucide-react no longer ships brand
  * marks (Facebook/Instagram/Twitter were removed), so these are the
  * official glyphs drawn as fill-based SVGs. `strokeWidth` is accepted (and
  * ignored) so they are drop-in compatible with Lucide usage.
