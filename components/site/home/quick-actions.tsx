@@ -37,7 +37,7 @@ const actions = [
 	{
 		icon: UserPlus,
 		title: "Open an account",
-		body: "Start today — visit a branch or send us the enquiry form.",
+		body: "Start today: visit a branch or send us the enquiry form.",
 		href: "/contact",
 		external: false,
 	},

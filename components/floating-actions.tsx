@@ -56,7 +56,7 @@ export function FloatingActions() {
               ref={launcherRef}
               type="button"
               onClick={() => setIsChatOpen(true)}
-              aria-label="Open Maendeleo Assistant — Let's Chat"
+              aria-label="Open Maendeleo Assistant, Let's Chat"
               className="block h-14 w-14 overflow-hidden rounded-full bg-white shadow-lift-2 transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:h-16 sm:w-16"
             >
               <Image

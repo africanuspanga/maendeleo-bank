@@ -20,7 +20,7 @@ const sourceSerif = Source_Serif_4({
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://maendeleobank.co.tz";
 
 const description =
-  "Maendeleo Bank PLC is a Tanzanian national commercial bank listed on the Dar es Salaam Stock Exchange (MBP). Personal, business and institutional banking, loans and digital banking across Tanzania — your trusted partner in development.";
+  "Maendeleo Bank PLC is a Tanzanian national commercial bank listed on the Dar es Salaam Stock Exchange (MBP). Personal, business and institutional banking, loans and digital banking across Tanzania, your trusted partner in development.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

@@ -14,7 +14,7 @@ const milestones = [
 	},
 	{
 		year: "2013",
-		title: "Operations begin — and a DSE listing",
+		title: "Operations begin, and a DSE listing",
 		body: "The bank commences operations as a regional bank and lists on the Dar es Salaam Stock Exchange (MBP) in the same year.",
 	},
 	{
@@ -25,7 +25,7 @@ const milestones = [
 	{
 		year: "2026",
 		title: "Six branches, and a first beyond Dar",
-		body: "The Arusha branch opens on 24 February 2026 — the bank's sixth branch, and its first outside the Dar es Salaam region.",
+		body: "The Arusha branch opens on 24 February 2026, the bank's sixth branch, and its first outside the Dar es Salaam region.",
 	},
 ];
 
@@ -54,7 +54,7 @@ export function BankingZones() {
 								Fifteen years of steady progress
 							</h2>
 							<p className="mt-5 max-w-xl text-lg font-normal leading-[1.5] text-white/60">
-								From a church initiative to a national commercial bank —
+								From a church initiative to a national commercial bank,
 								regulated by the Bank of Tanzania, listed on the DSE, and
 								accountable to public shareholders.
 							</p>
